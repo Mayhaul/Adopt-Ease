@@ -1,638 +1,47 @@
 /* =====================================================
-   PAWCARE JAVASCRIPT
-===================================================== */
-
-
-/* =====================================================
-   NAVBAR
-===================================================== */
-
-function toggleMenu() {
-
-    const navMenu =
-        document.getElementById("navMenu");
-
-    navMenu.classList.toggle("active");
-
-}
-
-
-/* =====================================================
-   TOAST
-===================================================== */
-
-function showToast(message) {
-
-    const toast =
-        document.getElementById("toast");
-
-    toast.textContent = message;
-
-    toast.classList.add("show");
-
-
-    setTimeout(() => {
-
-        toast.classList.remove("show");
-
-    }, 3000);
-
-}
-
-
-/* =====================================================
-   DOG ADOPTION
-===================================================== */
-
-function adoptDog(dogName) {
-
-    const loggedInEmail =
-        localStorage.getItem(
-            "pawcareLoggedInUser"
-        );
-
-
-    if (!loggedInEmail) {
-
-        showToast(
-            "🔐 Please login before adopting a dog."
-        );
-
-
-        setTimeout(() => {
-
-            openAuth("login");
-
-        }, 500);
-
-
-        return;
-
-    }
-
-
-    const confirmAdoption =
-        confirm(
-            `Would you like to start the adoption process for ${dogName}?`
-        );
-
-
-    if (confirmAdoption) {
-
-        showToast(
-            `❤️ Adoption request for ${dogName} has been submitted!`
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   DOG SEARCH
-===================================================== */
-
-function filterDogs() {
-
-    const searchInput =
-        document.getElementById("dogSearch");
-
-
-    const searchValue =
-        searchInput.value.toLowerCase();
-
-
-    const dogs =
-        document.querySelectorAll(".dog-card");
-
-
-    dogs.forEach((dog) => {
-
-        const dogName =
-            dog
-                .getAttribute("data-name")
-                .toLowerCase();
-
-
-        if (dogName.includes(searchValue)) {
-
-            dog.style.display = "block";
-
-        } else {
-
-            dog.style.display = "none";
-
-        }
-
-    });
-
-}
-
-
-/* =====================================================
-   LOCATION
-===================================================== */
-
-function getLocation() {
-
-    const locationInput =
-        document.getElementById("location");
-
-
-    if (!navigator.geolocation) {
-
-        showToast(
-            "Geolocation is not supported by your browser."
-        );
-
-        return;
-
-    }
-
-
-    showToast(
-        "📍 Getting your location..."
-    );
-
-
-    navigator.geolocation.getCurrentPosition(
-
-        function (position) {
-
-            const latitude =
-                position.coords.latitude;
-
-
-            const longitude =
-                position.coords.longitude;
-
-
-            locationInput.value =
-                `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
-
-
-            showToast(
-                "📍 Location detected successfully!"
-            );
-
-        },
-
-
-        function () {
-
-            showToast(
-                "Unable to get your location."
-            );
-
-        }
-
-    );
-
-}
-
-
-/* =====================================================
-   IMAGE UPLOAD
-===================================================== */
-
-const animalImage =
-    document.getElementById(
-        "animalImage"
-    );
-
-
-animalImage.addEventListener(
-    "change",
-    function () {
-
-        const file =
-            this.files[0];
-
-
-        if (!file) {
-
-            return;
-
-        }
-
-
-        const imagePreview =
-            document.getElementById(
-                "imagePreview"
-            );
-
-
-        const reader =
-            new FileReader();
-
-
-        reader.onload =
-            function (event) {
-
-                imagePreview.innerHTML = `
-
-                    <img
-                        src="${event.target.result}"
-                        alt="Animal">
-
-                    <span>
-                        Photo selected
-                    </span>
-
-                `;
-
-            };
-
-
-        reader.readAsDataURL(file);
-
-    }
-);
-
-
-/* =====================================================
-   RESCUE FORM
-===================================================== */
-
-const rescueForm =
-    document.getElementById(
-        "rescueForm"
-    );
-
-
-rescueForm.addEventListener(
-    "submit",
-    function (event) {
-
-        event.preventDefault();
-
-
-        const animalType =
-            document.getElementById(
-                "animalType"
-            ).value;
-
-
-        const condition =
-            document.getElementById(
-                "condition"
-            ).value;
-
-
-        const location =
-            document.getElementById(
-                "location"
-            ).value;
-
-
-        const phone =
-            document.getElementById(
-                "phone"
-            ).value;
-
-
-        if (!location) {
-
-            showToast(
-                "⚠️ Please provide the animal's location."
-            );
-
-            return;
-
-        }
-
-
-        if (!phone) {
-
-            showToast(
-                "⚠️ Please enter your phone number."
-            );
-
-            return;
-
-        }
-
-
-        showToast(
-            `🚑 Rescue request submitted for the ${animalType}.`
-        );
-
-
-        setTimeout(() => {
-
-            alert(
-
-                `Rescue Request Created!\n\n` +
-
-                `Animal: ${animalType}\n` +
-
-                `Condition: ${condition}\n` +
-
-                `Location: ${location}\n\n` +
-
-                `The nearest NGO has been notified.`
-
-            );
-
-        }, 500);
-
-
-        rescueForm.reset();
-
-
-        document.getElementById(
-            "imagePreview"
-        ).innerHTML = `
-
-            📷
-
-            <span>
-                Click to upload photo
-            </span>
-
-        `;
-
-    }
-);
-
-
-/* =====================================================
-   NGO
-===================================================== */
-
-function contactNGO(ngoName) {
-
-    showToast(
-        `📞 Connecting you with ${ngoName}...`
-    );
-
-}
-
-
-/* =====================================================
-   CART
-===================================================== */
-
-let cart = [];
-
-
-/* Add product */
-
-function addToCart(
-    productName,
-    price
-) {
-
-    const product = {
-
-        name: productName,
-
-        price: price
-
-    };
-
-
-    cart.push(product);
-
-
-    updateCart();
-
-
-    showToast(
-        `${productName} added to cart 🛒`
-    );
-
-}
-
-
-/* Update cart */
-
-function updateCart() {
-
-    const cartCount =
-        document.getElementById(
-            "cartCount"
-        );
-
-
-    const cartItems =
-        document.getElementById(
-            "cartItems"
-        );
-
-
-    const cartTotal =
-        document.getElementById(
-            "cartTotal"
-        );
-
-
-    cartCount.textContent =
-        cart.length;
-
-
-    if (cart.length === 0) {
-
-        cartItems.innerHTML = `
-
-            <p class="empty-cart">
-                Your cart is empty.
-            </p>
-
-        `;
-
-
-        cartTotal.textContent =
-            "₹0";
-
-
-        return;
-
-    }
-
-
-    let total = 0;
-
-
-    cartItems.innerHTML = "";
-
-
-    cart.forEach(
-        (item, index) => {
-
-            total += item.price;
-
-
-            const cartItem =
-                document.createElement(
-                    "div"
-                );
-
-
-            cartItem.classList.add(
-                "cart-item"
-            );
-
-
-            cartItem.innerHTML = `
-
-                <span>
-                    ${item.name}
-                </span>
-
-                <strong>
-                    ₹${item.price}
-                </strong>
-
-                <button
-                    onclick="removeFromCart(${index})">
-
-                    ❌
-
-                </button>
-
-            `;
-
-
-            cartItems.appendChild(
-                cartItem
-            );
-
-        }
-    );
-
-
-    cartTotal.textContent =
-        `₹${total}`;
-
-}
-
-
-/* Remove cart item */
-
-function removeFromCart(index) {
-
-    cart.splice(index, 1);
-
-    updateCart();
-
-    showToast(
-        "Item removed from cart."
-    );
-
-}
-
-
-/* Open cart */
-
-function openCart() {
-
-    document.getElementById(
-        "cartModal"
-    ).style.display = "flex";
-
-}
-
-
-/* Close cart */
-
-function closeCart() {
-
-    document.getElementById(
-        "cartModal"
-    ).style.display = "none";
-
-}
-
-
-/* Click outside cart */
-
-window.addEventListener(
-    "click",
-    function (event) {
-
-        const modal =
-            document.getElementById(
-                "cartModal"
-            );
-
-
-        if (event.target === modal) {
-
-            closeCart();
-
-        }
-
-    }
-);
-
-
-/* Checkout */
-
-function checkout() {
-
-    if (cart.length === 0) {
-
-        showToast(
-            "🛒 Your cart is empty."
-        );
-
-        return;
-
-    }
-
-
-    alert(
-
-        "Thank you for supporting PawCare! ❤️\n\n" +
-
-        "Checkout functionality can be connected " +
-
-        "to a payment gateway in the backend."
-
-    );
-
-}
-
-
-/* =====================================================
-   AUTHENTICATION
-   LOCAL STORAGE
+   ADOPT-EASE
+   DOG LISTING CRUD
+   localStorage
 ===================================================== */
 
 
 /*
-    All users are stored in:
+    All dog data is stored using this key:
 
-    pawcareUsers
+    pawcareDogs
 
     Example:
 
-    [
-        {
-            name: "Yuvraj",
-            email: "yuvraj@gmail.com",
-            phone: "9876543210",
-            password: "123456"
-        }
-    ]
+    localStorage
+        |
+        └── pawcareDogs
+                |
+                ├── Bruno
+                ├── Luna
+                └── Max
 
 */
 
 
-/* Get users */
+const STORAGE_KEY = "pawcareDogs";
 
-function getUsers() {
 
-    const users =
+
+/* =====================================================
+   READ FROM LOCAL STORAGE
+===================================================== */
+
+function getDogs() {
+
+    const data =
         localStorage.getItem(
-            "pawcareUsers"
+            STORAGE_KEY
         );
 
 
-    if (users) {
+    if (data) {
 
-        return JSON.parse(users);
+        return JSON.parse(data);
 
     }
 
@@ -642,479 +51,877 @@ function getUsers() {
 }
 
 
-/* Save users */
 
-function saveUsers(users) {
+/* =====================================================
+   SAVE TO LOCAL STORAGE
+===================================================== */
+
+function saveDogs(dogs) {
 
     localStorage.setItem(
 
-        "pawcareUsers",
+        STORAGE_KEY,
 
-        JSON.stringify(users)
+        JSON.stringify(dogs)
 
     );
 
 }
 
 
-/* =====================================================
-   OPEN AUTH
-===================================================== */
-
-function openAuth(type) {
-
-    const modal =
-        document.getElementById(
-            "authModal"
-        );
-
-
-    modal.style.display =
-        "flex";
-
-
-    switchAuth(type);
-
-}
-
 
 /* =====================================================
-   CLOSE AUTH
+   CREATE + UPDATE
 ===================================================== */
 
-function closeAuth() {
-
+const dogForm =
     document.getElementById(
-        "authModal"
-    ).style.display =
-        "none";
-
-}
-
-
-/* =====================================================
-   SWITCH LOGIN / SIGNUP
-===================================================== */
-
-function switchAuth(type) {
-
-    const loginContainer =
-        document.getElementById(
-            "loginFormContainer"
-        );
-
-
-    const signupContainer =
-        document.getElementById(
-            "signupFormContainer"
-        );
-
-
-    if (type === "signup") {
-
-        loginContainer.style.display =
-            "none";
-
-
-        signupContainer.style.display =
-            "block";
-
-    }
-
-
-    else {
-
-        signupContainer.style.display =
-            "none";
-
-
-        loginContainer.style.display =
-            "block";
-
-    }
-
-}
-
-
-/* =====================================================
-   SIGNUP
-===================================================== */
-
-const signupForm =
-    document.getElementById(
-        "signupForm"
+        "dogForm"
     );
 
 
-signupForm.addEventListener(
+dogForm.addEventListener(
     "submit",
     function (event) {
 
         event.preventDefault();
+
+
+        /*
+            Get values from form
+        */
+
+        const id =
+            document.getElementById(
+                "dogId"
+            ).value;
 
 
         const name =
             document.getElementById(
-                "signupName"
+                "dogName"
             ).value.trim();
 
 
-        const email =
+        const breed =
             document.getElementById(
-                "signupEmail"
-            ).value.trim().toLowerCase();
-
-
-        const phone =
-            document.getElementById(
-                "signupPhone"
+                "dogBreed"
             ).value.trim();
 
 
-        const password =
+        const age =
+            Number(
+                document.getElementById(
+                    "dogAge"
+                ).value
+            );
+
+
+        const gender =
             document.getElementById(
-                "signupPassword"
+                "dogGender"
             ).value;
 
 
-        const confirmPassword =
+        const location =
             document.getElementById(
-                "confirmPassword"
-            ).value;
+                "dogLocation"
+            ).value.trim();
 
 
-        /* Password validation */
-
-        if (password.length < 6) {
-
-            showToast(
-                "⚠️ Password must contain at least 6 characters."
-            );
-
-            return;
-
-        }
+        const image =
+            document.getElementById(
+                "dogImage"
+            ).value.trim();
 
 
-        /* Confirm password */
-
-        if (
-            password !==
-            confirmPassword
-        ) {
-
-            showToast(
-                "⚠️ Passwords do not match."
-            );
-
-            return;
-
-        }
+        const description =
+            document.getElementById(
+                "dogDescription"
+            ).value.trim();
 
 
-        /* Get users */
 
-        const users =
-            getUsers();
+        /*
+            Get existing dogs
+        */
 
-
-        /* Check duplicate email */
-
-        const existingUser =
-            users.find(
-                user =>
-                    user.email === email
-            );
+        const dogs =
+            getDogs();
 
 
-        if (existingUser) {
 
-            showToast(
-                "⚠️ This email is already registered."
-            );
+        /* =================================================
+           UPDATE
+        ================================================= */
 
-            return;
+        if (id) {
 
-        }
+            const index =
+                dogs.findIndex(
+                    function (dog) {
 
+                        return (
+                            dog.id ===
+                            Number(id)
+                        );
 
-        /* Create user */
-
-        const newUser = {
-
-            name: name,
-
-            email: email,
-
-            phone: phone,
-
-            password: password
-
-        };
-
-
-        /* Add */
-
-        users.push(
-            newUser
-        );
-
-
-        /* Save */
-
-        saveUsers(
-            users
-        );
-
-
-        showToast(
-            "🎉 Account created successfully!"
-        );
-
-
-        /* Clear form */
-
-        signupForm.reset();
-
-
-        /* Switch to login */
-
-        setTimeout(
-            () => {
-
-                switchAuth(
-                    "login"
+                    }
                 );
 
-            },
-            1000
-        );
 
-    }
-);
+            if (index !== -1) {
 
+                dogs[index] = {
 
-/* =====================================================
-   LOGIN
-===================================================== */
+                    id:
+                        Number(id),
 
-const loginForm =
-    document.getElementById(
-        "loginForm"
-    );
+                    name:
+                        name,
 
+                    breed:
+                        breed,
 
-loginForm.addEventListener(
-    "submit",
-    function (event) {
+                    age:
+                        age,
 
-        event.preventDefault();
+                    gender:
+                        gender,
 
+                    location:
+                        location,
 
-        const email =
-            document.getElementById(
-                "loginEmail"
-            ).value.trim().toLowerCase();
+                    image:
+                        image,
 
+                    description:
+                        description
 
-        const password =
-            document.getElementById(
-                "loginPassword"
-            ).value;
+                };
 
 
-        /* Get users */
-
-        const users =
-            getUsers();
+                saveDogs(dogs);
 
 
-        /* Find user */
+                alert(
+                    "Dog listing updated successfully!"
+                );
 
-        const user =
-            users.find(
-                user =>
+            }
 
-                    user.email ===
-                    email &&
+        }
 
-                    user.password ===
-                    password
 
+
+        /* =================================================
+           CREATE
+        ================================================= */
+
+        else {
+
+            const newDog = {
+
+                id:
+                    Date.now(),
+
+                name:
+                    name,
+
+                breed:
+                    breed,
+
+                age:
+                    age,
+
+                gender:
+                    gender,
+
+                location:
+                    location,
+
+                image:
+                    image,
+
+                description:
+                    description
+
+            };
+
+
+            dogs.push(
+                newDog
             );
 
 
-        /* Invalid */
-
-        if (!user) {
-
-            showToast(
-                "❌ Invalid email or password."
+            saveDogs(
+                dogs
             );
 
-            return;
+
+            alert(
+                "Dog listing added successfully!"
+            );
 
         }
 
 
         /*
-            Save current user
-
-            Only email is stored
-            as the active session.
+            Reset form
         */
 
-        localStorage.setItem(
-            "pawcareLoggedInUser",
-            user.email
-        );
+        resetForm();
 
 
-        showToast(
-            `❤️ Welcome back, ${user.name}!`
-        );
+        /*
+            Refresh displayed listings
+        */
 
-
-        loginForm.reset();
-
-
-        closeAuth();
-
-
-        updateLoginUI();
+        displayDogs();
 
     }
 );
 
 
+
 /* =====================================================
-   UPDATE LOGIN UI
+   READ
+   DISPLAY ALL DOGS
 ===================================================== */
 
-function updateLoginUI() {
+function displayDogs() {
 
-    const loginButton =
+    const dogs =
+        getDogs();
+
+
+    displayDogsList(
+        dogs
+    );
+
+}
+
+
+
+/* =====================================================
+   DISPLAY DOG LIST
+===================================================== */
+
+function displayDogsList(dogs) {
+
+    const container =
         document.getElementById(
-            "loginNavBtn"
+            "dogContainer"
         );
 
 
-    const userSection =
-        document.getElementById(
-            "userSection"
-        );
+    /*
+        Remove existing cards
+    */
+
+    container.innerHTML = "";
 
 
-    const userName =
-        document.getElementById(
-            "userName"
-        );
+
+    /*
+        If there are no dogs
+    */
+
+    if (dogs.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-message">
+
+                <h3>
+                    🐶 No Dog Listings
+                </h3>
+
+                <p>
+                    Add your first dog using the form below.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
 
 
-    const loggedInEmail =
-        localStorage.getItem(
-            "pawcareLoggedInUser"
-        );
+
+    /*
+        Create a card for every dog
+    */
+
+    dogs.forEach(
+        function (dog) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
 
 
-    /* Logged in */
-
-    if (loggedInEmail) {
-
-        const users =
-            getUsers();
+            card.className =
+                "dog-card";
 
 
-        const user =
-            users.find(
-                user =>
-                    user.email ===
-                    loggedInEmail
+            card.innerHTML = `
+
+                <img
+                    src="${dog.image}"
+                    alt="${dog.name}"
+                    onerror="
+                        this.src =
+                        'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=600&q=80'
+                    "
+                >
+
+
+                <div class="dog-info">
+
+                    <h3>
+                        ${dog.name}
+                    </h3>
+
+
+                    <p>
+                        🐕 Breed:
+                        ${dog.breed}
+                    </p>
+
+
+                    <p>
+                        🎂 Age:
+                        ${dog.age}
+                        years
+                    </p>
+
+
+                    <p>
+                        ${
+                            dog.gender === "Male"
+                            ? "♂️ Male"
+                            : "♀️ Female"
+                        }
+                    </p>
+
+
+                    <p>
+                        📍
+                        ${dog.location}
+                    </p>
+
+
+                    <p class="dog-description">
+
+                        ${dog.description}
+
+                    </p>
+
+
+                    <div class="card-buttons">
+
+                        <button
+                            class="edit-btn"
+                            onclick="
+                                editDog(${dog.id})
+                            ">
+
+                            ✏️ Edit
+
+                        </button>
+
+
+                        <button
+                            class="delete-btn"
+                            onclick="
+                                deleteDog(${dog.id})
+                            ">
+
+                            🗑️ Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                card
             );
 
-
-        if (user) {
-
-            loginButton.style.display =
-                "none";
-
-
-            userSection.style.display =
-                "flex";
-
-
-            userName.textContent =
-                `Hi, ${user.name}`;
-
         }
-
-    }
-
-
-    /* Logged out */
-
-    else {
-
-        loginButton.style.display =
-            "block";
-
-
-        userSection.style.display =
-            "none";
-
-    }
+    );
 
 }
 
 
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-function logoutUser() {
-
-    localStorage.removeItem(
-        "pawcareLoggedInUser"
-    );
-
-
-    showToast(
-        "👋 You have been logged out."
-    );
-
-
-    updateLoginUI();
-
-}
-
 
 /* =====================================================
-   CLOSE AUTH WHEN CLICKING OUTSIDE
+   UPDATE
+   EDIT DOG
 ===================================================== */
 
-document
-    .getElementById("authModal")
-    .addEventListener(
-        "click",
-        function (event) {
+function editDog(id) {
 
-            if (
-                event.target ===
-                this
-            ) {
+    const dogs =
+        getDogs();
 
-                closeAuth();
+
+    /*
+        Find dog by ID
+    */
+
+    const dog =
+        dogs.find(
+            function (dog) {
+
+                return (
+                    dog.id === id
+                );
 
             }
+        );
 
-        }
-    );
+
+    if (!dog) {
+
+        alert(
+            "Dog listing not found!"
+        );
+
+        return;
+
+    }
+
+
+
+    /*
+        Put existing data
+        inside form
+    */
+
+    document.getElementById(
+        "dogId"
+    ).value =
+        dog.id;
+
+
+    document.getElementById(
+        "dogName"
+    ).value =
+        dog.name;
+
+
+    document.getElementById(
+        "dogBreed"
+    ).value =
+        dog.breed;
+
+
+    document.getElementById(
+        "dogAge"
+    ).value =
+        dog.age;
+
+
+    document.getElementById(
+        "dogGender"
+    ).value =
+        dog.gender;
+
+
+    document.getElementById(
+        "dogLocation"
+    ).value =
+        dog.location;
+
+
+    document.getElementById(
+        "dogImage"
+    ).value =
+        dog.image;
+
+
+    document.getElementById(
+        "dogDescription"
+    ).value =
+        dog.description;
+
+
+
+    /*
+        Change form title
+    */
+
+    document.getElementById(
+        "formTitle"
+    ).textContent =
+        "Update Dog";
+
+
+
+    /*
+        Change submit button
+    */
+
+    document.getElementById(
+        "submitButton"
+    ).textContent =
+        "Update Dog";
+
+
+
+    /*
+        Scroll to form
+    */
+
+    document.getElementById(
+        "manage"
+    ).scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
 
 
 /* =====================================================
-   INITIALIZE
+   DELETE
 ===================================================== */
 
-updateCart();
+function deleteDog(id) {
 
-updateLoginUI();
+    const confirmDelete =
+        confirm(
+            "Are you sure you want to delete this dog listing?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+
+    }
+
+
+
+    /*
+        Get existing dogs
+    */
+
+    let dogs =
+        getDogs();
+
+
+
+    /*
+        Remove dog
+    */
+
+    dogs =
+        dogs.filter(
+            function (dog) {
+
+                return (
+                    dog.id !== id
+                );
+
+            }
+        );
+
+
+
+    /*
+        Save updated array
+    */
+
+    saveDogs(
+        dogs
+    );
+
+
+
+    /*
+        Refresh UI
+    */
+
+    displayDogs();
+
+
+    alert(
+        "Dog listing deleted successfully!"
+    );
+
+}
+
+
+
+/* =====================================================
+   CANCEL EDIT
+===================================================== */
+
+function cancelEdit() {
+
+    resetForm();
+
+}
+
+
+
+/* =====================================================
+   RESET FORM
+===================================================== */
+
+function resetForm() {
+
+    dogForm.reset();
+
+
+    document.getElementById(
+        "dogId"
+    ).value = "";
+
+
+    document.getElementById(
+        "formTitle"
+    ).textContent =
+        "Add a Dog";
+
+
+    document.getElementById(
+        "submitButton"
+    ).textContent =
+        "Add Dog";
+
+}
+
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function searchDogs() {
+
+    const searchValue =
+        document.getElementById(
+            "searchDog"
+        ).value
+        .toLowerCase()
+        .trim();
+
+
+    const dogs =
+        getDogs();
+
+
+
+    /*
+        Filter by:
+
+        1. Name
+        2. Breed
+        3. Location
+    */
+
+    const filteredDogs =
+        dogs.filter(
+            function (dog) {
+
+                return (
+
+                    dog.name
+                        .toLowerCase()
+                        .includes(
+                            searchValue
+                        )
+
+                    ||
+
+                    dog.breed
+                        .toLowerCase()
+                        .includes(
+                            searchValue
+                        )
+
+                    ||
+
+                    dog.location
+                        .toLowerCase()
+                        .includes(
+                            searchValue
+                        )
+
+                );
+
+            }
+        );
+
+
+
+    displayDogsList(
+        filteredDogs
+    );
+
+}
+
+
+
+/* =====================================================
+   CLEAR SEARCH
+===================================================== */
+
+function clearSearch() {
+
+    document.getElementById(
+        "searchDog"
+    ).value = "";
+
+
+    displayDogs();
+
+}
+
+
+
+/* =====================================================
+   INITIAL SAMPLE DATA
+===================================================== */
+
+function initializeDogs() {
+
+    const existingData =
+        localStorage.getItem(
+            STORAGE_KEY
+        );
+
+
+    /*
+        Don't overwrite existing data.
+    */
+
+    if (existingData) {
+
+        return;
+
+    }
+
+
+    const sampleDogs = [
+
+        {
+
+            id: 1,
+
+            name: "Bruno",
+
+            breed: "Labrador",
+
+            age: 2,
+
+            gender: "Male",
+
+            location: "Delhi",
+
+            image:
+                "https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=600&q=80",
+
+            description:
+                "Friendly and energetic Labrador."
+
+        },
+
+
+        {
+
+            id: 2,
+
+            name: "Luna",
+
+            breed: "Beagle",
+
+            age: 1,
+
+            gender: "Female",
+
+            location: "Chandigarh",
+
+            image:
+                "https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=600&q=80",
+
+            description:
+                "Playful Beagle who loves people."
+
+        },
+
+
+        {
+
+            id: 3,
+
+            name: "Max",
+
+            breed: "Indie",
+
+            age: 3,
+
+            gender: "Male",
+
+            location: "Amritsar",
+
+            image:
+                "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&q=80",
+
+            description:
+                "Calm and friendly Indie dog."
+
+        },
+
+
+        {
+
+            id: 4,
+
+            name: "Coco",
+
+            breed: "Golden Retriever",
+
+            age: 2,
+
+            gender: "Female",
+
+            location: "Ludhiana",
+
+            image:
+                "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=600&q=80",
+
+            description:
+                "Sweet Golden Retriever."
+
+        }
+
+    ];
+
+
+    saveDogs(
+        sampleDogs
+    );
+
+}
+
+
+
+/* =====================================================
+   START APPLICATION
+===================================================== */
+
+initializeDogs();
+
+displayDogs();
