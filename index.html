@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PawCare - Adopt. Rescue. Care.</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            🐾 <span>PawCare</span>
+        </div>
+
+
+        <nav id="navMenu">
+
+            <a href="#home">Home</a>
+
+            <a href="#adopt">Adopt</a>
+
+            <a href="#shop">Pet Shop</a>
+
+            <a href="#rescue">Rescue</a>
+
+            <a href="#ngos">NGOs</a>
+
+            <a href="#about">About</a>
+
+        </nav>
+
+
+        <div class="nav-right">
+
+            <button
+                class="cart-btn"
+                onclick="openCart()">
+
+                🛒
+                <span id="cartCount">0</span>
+
+            </button>
+
+
+            <!-- Login -->
+
+            <button
+                class="login-btn"
+                id="loginNavBtn"
+                onclick="openAuth('login')">
+
+                Login
+
+            </button>
+
+
+            <!-- Logged in user -->
+
+            <div
+                class="user-section"
+                id="userSection">
+
+                <span id="userName">
+                    User
+                </span>
+
+                <button
+                    class="logout-btn"
+                    onclick="logoutUser()">
+
+                    Logout
+
+                </button>
+
+            </div>
+
+
+            <button
+                class="menu-btn"
+                onclick="toggleMenu()">
+
+                ☰
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section id="home" class="hero">
+
+
+        <div class="hero-content">
+
+            <span class="hero-tag">
+
+                🐾 Every Paw Deserves a Home
+
+            </span>
+
+
+            <h1>
+
+                Give Them a
+
+                <span>
+                    Second Chance
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Adopt a loving companion, shop for your pet,
+                or help an injured animal reach the nearest
+                rescue organization.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a
+                    href="#adopt"
+                    class="btn primary-btn">
+
+                    🐶 Adopt a Dog
+
+                </a>
+
+
+                <a
+                    href="#rescue"
+                    class="btn emergency-btn">
+
+                    🚑 Report Injured Animal
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="hero-image">
+
+            <div class="hero-circle"></div>
+
+
+            <img
+                src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=800&q=80"
+                alt="Happy Dog">
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         STATS
+    ====================================================== -->
+
+    <section class="stats">
+
+
+        <div class="stat">
+
+            <h2>
+                250+
+            </h2>
+
+            <p>
+                Dogs Adopted
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>
+                50+
+            </h2>
+
+            <p>
+                Rescue Cases
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>
+                25+
+            </h2>
+
+            <p>
+                Partner NGOs
+            </p>
+
+        </div>
+
+
+        <div class="stat">
+
+            <h2>
+                500+
+            </h2>
+
+            <p>
+                Happy Pet Parents
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         HOW IT WORKS
+    ====================================================== -->
+
+    <section class="section">
+
+
+        <div class="section-heading">
+
+            <span>
+                HOW IT WORKS
+            </span>
+
+
+            <h2>
+
+                Making Pet Care
+
+                <strong>
+                    Simple
+                </strong>
+
+            </h2>
+
+        </div>
+
+
+
+        <div class="steps">
+
+
+            <div class="step-card">
+
+                <div class="step-icon">
+                    🐶
+                </div>
+
+                <h3>
+                    Find a Friend
+                </h3>
+
+                <p>
+
+                    Browse through dogs waiting
+                    for their forever home.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="step-card">
+
+                <div class="step-icon">
+                    ❤️
+                </div>
+
+                <h3>
+                    Choose & Connect
+                </h3>
+
+                <p>
+
+                    Find the perfect companion and
+                    connect with the shelter.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="step-card">
+
+                <div class="step-icon">
+                    🏠
+                </div>
+
+                <h3>
+                    Give Them a Home
+                </h3>
+
+                <p>
+
+                    Complete the adoption process
+                    and welcome your new friend.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ADOPTION
+    ====================================================== -->
+
+    <section
+        id="adopt"
+        class="section adoption-section">
+
+
+        <div class="section-heading">
+
+            <span>
+                ADOPTION
+            </span>
+
+
+            <h2>
+
+                Dogs Waiting For
+
+                <strong>
+                    You
+                </strong>
+
+            </h2>
+
+
+            <p>
+
+                Every dog deserves a loving family.
+                Maybe yours is waiting here.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- Search -->
+
+        <div class="search-container">
+
+            <input
+                type="text"
+                id="dogSearch"
+                placeholder="🔎 Search by name or breed..."
+                onkeyup="filterDogs()">
+
+        </div>
+
+
+
+        <div
+            class="dog-grid"
+            id="dogGrid">
+
+
+            <!-- Dog 1 -->
+
+            <div
+                class="dog-card"
+                data-name="Bruno Labrador">
+
+
+                <div class="dog-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=600&q=80"
+                        alt="Bruno">
+
+
+                    <span class="available">
+                        Available
+                    </span>
+
+                </div>
+
+
+                <div class="dog-info">
+
+                    <h3>
+                        Bruno
+                    </h3>
+
+                    <p>
+                        🐕 Labrador • 2 Years
+                    </p>
+
+                    <p>
+                        📍 Delhi
+                    </p>
+
+
+                    <button
+                        class="adopt-btn"
+                        onclick="adoptDog('Bruno')">
+
+                        Adopt Bruno ❤️
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Dog 2 -->
+
+            <div
+                class="dog-card"
+                data-name="Luna Beagle">
+
+
+                <div class="dog-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=600&q=80"
+                        alt="Luna">
+
+
+                    <span class="available">
+                        Available
+                    </span>
+
+                </div>
+
+
+                <div class="dog-info">
+
+                    <h3>
+                        Luna
+                    </h3>
+
+                    <p>
+                        🐕 Beagle • 1.5 Years
+                    </p>
+
+                    <p>
+                        📍 Chandigarh
+                    </p>
+
+
+                    <button
+                        class="adopt-btn"
+                        onclick="adoptDog('Luna')">
+
+                        Adopt Luna ❤️
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Dog 3 -->
+
+            <div
+                class="dog-card"
+                data-name="Max Indie">
+
+
+                <div class="dog-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&q=80"
+                        alt="Max">
+
+
+                    <span class="available">
+                        Available
+                    </span>
+
+                </div>
+
+
+                <div class="dog-info">
+
+                    <h3>
+                        Max
+                    </h3>
+
+                    <p>
+                        🐕 Indie • 3 Years
+                    </p>
+
+                    <p>
+                        📍 Amritsar
+                    </p>
+
+
+                    <button
+                        class="adopt-btn"
+                        onclick="adoptDog('Max')">
+
+                        Adopt Max ❤️
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Dog 4 -->
+
+            <div
+                class="dog-card"
+                data-name="Coco Golden Retriever">
+
+
+                <div class="dog-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=600&q=80"
+                        alt="Coco">
+
+
+                    <span class="available">
+                        Available
+                    </span>
+
+                </div>
+
+
+                <div class="dog-info">
+
+                    <h3>
+                        Coco
+                    </h3>
+
+                    <p>
+                        🐕 Golden Retriever • 2 Years
+                    </p>
+
+                    <p>
+                        📍 Ludhiana
+                    </p>
+
+
+                    <button
+                        class="adopt-btn"
+                        onclick="adoptDog('Coco')">
+
+                        Adopt Coco ❤️
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         RESCUE
+    ====================================================== -->
+
+    <section
+        id="rescue"
+        class="rescue-section">
+
+
+        <div class="rescue-container">
+
+
+            <div class="rescue-text">
+
+                <span>
+                    EMERGENCY RESCUE
+                </span>
+
+
+                <h2>
+                    Found an Injured Animal?
+                </h2>
+
+
+                <p>
+
+                    Don't leave them alone. Report the
+                    animal and help us connect them with
+                    the nearest NGO or rescue organization.
+
+                </p>
+
+
+                <div class="rescue-flow">
+
+                    <div>
+
+                        📸
+
+                        <span>
+                            Upload Photo
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        📍
+
+                        <span>
+                            Share Location
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        ❤️
+
+                        <span>
+                            Get Help
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Rescue Form -->
+
+            <div class="rescue-form">
+
+                <h3>
+                    🚑 Report an Animal
+                </h3>
+
+
+                <form id="rescueForm">
+
+
+                    <label>
+                        Animal Photo
+                    </label>
+
+
+                    <div class="upload-box">
+
+                        <input
+                            type="file"
+                            id="animalImage"
+                            accept="image/*">
+
+
+                        <div id="imagePreview">
+
+                            📷
+
+                            <span>
+                                Click to upload photo
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <label>
+                        Animal Type
+                    </label>
+
+
+                    <select id="animalType">
+
+                        <option>
+                            Dog
+                        </option>
+
+                        <option>
+                            Cat
+                        </option>
+
+                        <option>
+                            Cow
+                        </option>
+
+                        <option>
+                            Other
+                        </option>
+
+                    </select>
+
+
+
+                    <label>
+                        Condition
+                    </label>
+
+
+                    <select id="condition">
+
+                        <option>
+                            Road Accident
+                        </option>
+
+                        <option>
+                            Serious Injury
+                        </option>
+
+                        <option>
+                            Minor Injury
+                        </option>
+
+                        <option>
+                            Unable to Move
+                        </option>
+
+                        <option>
+                            Other
+                        </option>
+
+                    </select>
+
+
+
+                    <label>
+                        Description
+                    </label>
+
+
+                    <textarea
+                        id="description"
+                        placeholder="Describe the animal's condition..."></textarea>
+
+
+
+                    <label>
+                        Location
+                    </label>
+
+
+                    <div class="location-input">
+
+                        <input
+                            type="text"
+                            id="location"
+                            placeholder="Enter location">
+
+
+                        <button
+                            type="button"
+                            onclick="getLocation()">
+
+                            📍
+
+                        </button>
+
+                    </div>
+
+
+
+                    <label>
+                        Your Phone Number
+                    </label>
+
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="Enter phone number"
+                        required>
+
+
+
+                    <button
+                        type="submit"
+                        class="submit-rescue">
+
+                        🚑 Send Rescue Request
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         NGO SECTION
+    ====================================================== -->
+
+    <section
+        id="ngos"
+        class="section">
+
+
+        <div class="section-heading">
+
+            <span>
+                OUR PARTNERS
+            </span>
+
+
+            <h2>
+
+                Nearby Rescue
+
+                <strong>
+                    Organizations
+                </strong>
+
+            </h2>
+
+
+            <p>
+
+                Our platform helps connect injured
+                animals with nearby rescue organizations.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="ngo-grid">
+
+
+            <div class="ngo-card">
+
+                <div class="ngo-icon">
+                    🏥
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Animal Rescue Foundation
+                    </h3>
+
+                    <p>
+                        📍 2.4 km away
+                    </p>
+
+                    <p class="ngo-status">
+                        🟢 Available for Rescue
+                    </p>
+
+
+                    <button
+                        onclick="contactNGO('Animal Rescue Foundation')">
+
+                        Contact NGO
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="ngo-card">
+
+                <div class="ngo-icon">
+                    🐾
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Hope Animal Shelter
+                    </h3>
+
+                    <p>
+                        📍 4.1 km away
+                    </p>
+
+                    <p class="ngo-status">
+                        🟢 Available for Rescue
+                    </p>
+
+
+                    <button
+                        onclick="contactNGO('Hope Animal Shelter')">
+
+                        Contact NGO
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="ngo-card">
+
+                <div class="ngo-icon">
+                    ❤️
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Paws Care Society
+                    </h3>
+
+                    <p>
+                        📍 6.7 km away
+                    </p>
+
+                    <p class="ngo-status">
+                        🟡 Limited Availability
+                    </p>
+
+
+                    <button
+                        onclick="contactNGO('Paws Care Society')">
+
+                        Contact NGO
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SHOP
+    ====================================================== -->
+
+    <section
+        id="shop"
+        class="section shop-section">
+
+
+        <div class="section-heading">
+
+            <span>
+                PET STORE
+            </span>
+
+
+            <h2>
+
+                Everything Your Pet
+
+                <strong>
+                    Needs
+                </strong>
+
+            </h2>
+
+        </div>
+
+
+
+        <div class="product-grid">
+
+
+            <!-- Product 1 -->
+
+            <div class="product-card">
+
+                <div class="product-image">
+                    🥣
+                </div>
+
+
+                <div class="product-info">
+
+                    <span>
+                        Food
+                    </span>
+
+
+                    <h3>
+                        Premium Dog Food
+                    </h3>
+
+
+                    <p>
+                        Healthy nutrition for your furry friend.
+                    </p>
+
+
+                    <div class="product-bottom">
+
+                        <strong>
+                            ₹899
+                        </strong>
+
+
+                        <button
+                            onclick="addToCart('Premium Dog Food',899)">
+
+                            Add 🛒
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Product 2 -->
+
+            <div class="product-card">
+
+                <div class="product-image">
+                    🧸
+                </div>
+
+
+                <div class="product-info">
+
+                    <span>
+                        Toys
+                    </span>
+
+
+                    <h3>
+                        Chew Toy
+                    </h3>
+
+
+                    <p>
+                        Safe and durable toy for dogs.
+                    </p>
+
+
+                    <div class="product-bottom">
+
+                        <strong>
+                            ₹299
+                        </strong>
+
+
+                        <button
+                            onclick="addToCart('Chew Toy',299)">
+
+                            Add 🛒
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Product 3 -->
+
+            <div class="product-card">
+
+                <div class="product-image">
+                    🦮
+                </div>
+
+
+                <div class="product-info">
+
+                    <span>
+                        Accessories
+                    </span>
+
+
+                    <h3>
+                        Premium Collar
+                    </h3>
+
+
+                    <p>
+                        Comfortable adjustable collar.
+                    </p>
+
+
+                    <div class="product-bottom">
+
+                        <strong>
+                            ₹499
+                        </strong>
+
+
+                        <button
+                            onclick="addToCart('Premium Collar',499)">
+
+                            Add 🛒
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Product 4 -->
+
+            <div class="product-card">
+
+                <div class="product-image">
+                    🛏️
+                </div>
+
+
+                <div class="product-info">
+
+                    <span>
+                        Comfort
+                    </span>
+
+
+                    <h3>
+                        Dog Bed
+                    </h3>
+
+
+                    <p>
+                        Soft and comfortable sleeping bed.
+                    </p>
+
+
+                    <div class="product-bottom">
+
+                        <strong>
+                            ₹1,299
+                        </strong>
+
+
+                        <button
+                            onclick="addToCart('Dog Bed',1299)">
+
+                            Add 🛒
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         ABOUT
+    ====================================================== -->
+
+    <section
+        id="about"
+        class="about-section">
+
+
+        <div>
+
+            <span>
+                ABOUT PAWCARE
+            </span>
+
+
+            <h2>
+
+                Technology With
+
+                <strong>
+                    Compassion
+                </strong>
+
+            </h2>
+
+
+            <p>
+
+                PawCare is designed to create a bridge
+                between animals in need and people willing
+                to help.
+
+            </p>
+
+
+            <p>
+
+                From adoption to emergency rescue and pet
+                supplies, everything is available in one place.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="about-card">
+
+            <div>
+                🐶
+            </div>
+
+
+            <h3>
+                Our Mission
+            </h3>
+
+
+            <p>
+
+                Reduce the number of homeless and injured
+                animals by connecting them with responsible
+                humans and rescue organizations.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer>
+
+        <div class="footer-logo">
+            🐾 PawCare
+        </div>
+
+
+        <p>
+            Adopt. Rescue. Care.
+        </p>
+
+
+        <div class="footer-links">
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#adopt">
+                Adopt
+            </a>
+
+            <a href="#shop">
+                Shop
+            </a>
+
+            <a href="#rescue">
+                Rescue
+            </a>
+
+        </div>
+
+
+        <p class="copyright">
+
+            © 2026 PawCare.
+            Made with ❤️ for animals.
+
+        </p>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         CART MODAL
+    ====================================================== -->
+
+    <div
+        id="cartModal"
+        class="modal">
+
+
+        <div class="modal-content">
+
+
+            <button
+                class="close-btn"
+                onclick="closeCart()">
+
+                ×
+
+            </button>
+
+
+            <h2>
+                🛒 Your Cart
+            </h2>
+
+
+            <div id="cartItems">
+
+                <p class="empty-cart">
+                    Your cart is empty.
+                </p>
+
+            </div>
+
+
+            <div class="cart-total">
+
+                <span>
+                    Total
+                </span>
+
+
+                <strong id="cartTotal">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <button
+                class="checkout-btn"
+                onclick="checkout()">
+
+                Proceed to Checkout
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         LOGIN / SIGNUP MODAL
+    ====================================================== -->
+
+    <div
+        id="authModal"
+        class="auth-modal">
+
+
+        <div class="auth-box">
+
+
+            <button
+                class="auth-close"
+                onclick="closeAuth()">
+
+                ×
+
+            </button>
+
+
+
+            <!-- LOGIN -->
+
+            <div
+                id="loginFormContainer">
+
+
+                <div class="auth-header">
+
+                    <div class="auth-logo">
+                        🐾
+                    </div>
+
+
+                    <h2>
+                        Welcome Back!
+                    </h2>
+
+
+                    <p>
+                        Login to continue to PawCare
+                    </p>
+
+                </div>
+
+
+
+                <form id="loginForm">
+
+
+                    <label>
+                        Email
+                    </label>
+
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        placeholder="Enter your email"
+                        required>
+
+
+
+                    <label>
+                        Password
+                    </label>
+
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter your password"
+                        required>
+
+
+
+                    <button
+                        type="submit"
+                        class="auth-submit">
+
+                        Login
+
+                    </button>
+
+                </form>
+
+
+
+                <p class="auth-switch">
+
+                    Don't have an account?
+
+
+                    <button
+                        type="button"
+                        onclick="switchAuth('signup')">
+
+                        Sign Up
+
+                    </button>
+
+                </p>
+
+            </div>
+
+
+
+            <!-- SIGNUP -->
+
+            <div
+                id="signupFormContainer"
+                style="display:none;">
+
+
+                <div class="auth-header">
+
+                    <div class="auth-logo">
+                        🐾
+                    </div>
+
+
+                    <h2>
+                        Join PawCare
+                    </h2>
+
+
+                    <p>
+                        Create your account
+                    </p>
+
+                </div>
+
+
+
+                <form id="signupForm">
+
+
+                    <label>
+                        Full Name
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="signupName"
+                        placeholder="Enter your name"
+                        required>
+
+
+
+                    <label>
+                        Email
+                    </label>
+
+
+                    <input
+                        type="email"
+                        id="signupEmail"
+                        placeholder="Enter your email"
+                        required>
+
+
+
+                    <label>
+                        Phone Number
+                    </label>
+
+
+                    <input
+                        type="tel"
+                        id="signupPhone"
+                        placeholder="Enter phone number"
+                        required>
+
+
+
+                    <label>
+                        Password
+                    </label>
+
+
+                    <input
+                        type="password"
+                        id="signupPassword"
+                        placeholder="Create a password"
+                        required>
+
+
+
+                    <label>
+                        Confirm Password
+                    </label>
+
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirm your password"
+                        required>
+
+
+
+                    <button
+                        type="submit"
+                        class="auth-submit">
+
+                        Create Account
+
+                    </button>
+
+                </form>
+
+
+
+                <p class="auth-switch">
+
+                    Already have an account?
+
+
+                    <button
+                        type="button"
+                        onclick="switchAuth('login')">
+
+                        Login
+
+                    </button>
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
+
+    <div
+        id="toast"
+        class="toast">
+
+        Success!
+
+    </div>
+
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
