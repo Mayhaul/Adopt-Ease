@@ -1,129 +1,23 @@
-<%- layout('layouts/boilerplate') %>
+<%- layout('layouts/boilerplate', { title: 'Edit listing | AdoptEase' }) %>
 
-<section class="form-section">
-
-    <div class="form-container">
-
-        <h1>Edit Pet Listing</h1>
-        <p>Update the information about your pet.</p>
-
-        <form
-            action="/listings/<%= listing._id %>?_method=PUT"
-            method="POST"
-        >
-
-            <div class="form-group">
-                <label>Pet Name</label>
-                <input
-                    type="text"
-                    name="name"
-                    value="<%= listing.name %>"
-                    required
-                >
+<section class="page-hero page-hero-short"><div class="container page-hero-content"><span class="eyebrow eyebrow-light">Keep their profile up to date</span><h1>Update <em><%= listing.name %>'s</em> story.</h1><p>Make sure potential adopters have the latest information.</p></div></section>
+<section class="section form-page-section"><div class="container form-layout">
+    <aside class="form-aside"><span class="eyebrow">Listing editor</span><h2>Little updates matter.</h2><p class="muted-copy">Accurate age, health, and location details help adopters make informed decisions.</p><div class="tip-card"><span class="tip-icon">♡</span><strong>Currently listed</strong><p><%= listing.name %> · <%= listing.species %> · <%= listing.location %></p></div><a href="/listings/<%= listing._id %>" class="text-link">View listing <span>→</span></a></aside>
+    <div class="form-card"><div class="form-card-heading"><span class="step-pill">EDIT LISTING</span><h2>Pet details</h2><p>Update the fields below and save your changes.</p></div>
+        <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="app-form">
+            <div class="form-grid">
+                <div class="field"><label for="name">Pet's name *</label><input id="name" name="name" type="text" maxlength="80" value="<%= listing.name %>" required></div>
+                <div class="field"><label for="species">Animal type *</label><select id="species" name="species" required><% ['Dog','Cat','Bird','Rabbit','Other'].forEach((value) => { %><option value="<%= value %>" <%= listing.species === value ? 'selected' : '' %>><%= value %></option><% }) %></select></div>
+                <div class="field"><label for="breed">Breed *</label><input id="breed" name="breed" type="text" maxlength="80" value="<%= listing.breed %>" required></div>
+                <div class="field"><label for="age">Age in years *</label><input id="age" name="age" type="number" min="0" max="100" step="0.1" value="<%= listing.age %>" required></div>
+                <div class="field"><label for="gender">Gender *</label><select id="gender" name="gender" required><% ['Male','Female','Unknown'].forEach((value) => { %><option value="<%= value %>" <%= listing.gender === value ? 'selected' : '' %>><%= value %></option><% }) %></select></div>
+                <div class="field"><label for="location">Location *</label><input id="location" name="location" type="text" maxlength="120" value="<%= listing.location %>" required></div>
+                <div class="field field-span-2"><label for="image">Photo URL</label><input id="image" name="image" type="url" value="<%= listing.images?.[0] || '' %>" placeholder="https://example.com/pet-photo.jpg"><small>Leave blank to remove the current photo.</small></div>
+                <div class="field"><label for="healthStatus">Health status</label><input id="healthStatus" name="healthStatus" type="text" maxlength="160" value="<%= listing.healthStatus || '' %>"></div>
+                <div class="field"><label for="vaccinationStatus">Vaccinated?</label><select id="vaccinationStatus" name="vaccinationStatus"><option value="false" <%= !listing.vaccinationStatus ? 'selected' : '' %>>No / Not confirmed</option><option value="true" <%= listing.vaccinationStatus ? 'selected' : '' %>>Yes</option></select></div>
+                <div class="field field-span-2"><label for="description">About this pet *</label><textarea id="description" name="description" rows="6" minlength="10" maxlength="2000" required><%= listing.description %></textarea></div>
             </div>
-
-            <div class="form-group">
-                <label>Species</label>
-                <select name="species" required>
-                    <% ['Dog', 'Cat', 'Bird', 'Rabbit', 'Other'].forEach(s => { %>
-                        <option value="<%= s %>" <%= listing.species === s ? 'selected' : '' %>>
-                            <%= s %>
-                        </option>
-                    <% }) %>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Breed</label>
-                <input
-                    type="text"
-                    name="breed"
-                    value="<%= listing.breed %>"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Age</label>
-                <input
-                    type="number"
-                    name="age"
-                    min="0"
-                    value="<%= listing.age %>"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Gender</label>
-                <select name="gender" required>
-                    <% ['Male', 'Female', 'Unknown'].forEach(g => { %>
-                        <option value="<%= g %>" <%= listing.gender === g ? 'selected' : '' %>>
-                            <%= g %>
-                        </option>
-                    <% }) %>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Location</label>
-                <input
-                    type="text"
-                    name="location"
-                    value="<%= listing.location %>"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Image URL</label>
-                <input
-                    type="url"
-                    name="image"
-                    value="<%= listing.images?.[0] || '' %>"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Health Status</label>
-                <input
-                    type="text"
-                    name="healthStatus"
-                    value="<%= listing.healthStatus || '' %>"
-                >
-            </div>
-
-            <div class="form-group">
-                <label>Vaccinated?</label>
-                <select name="vaccinationStatus">
-                    <option value="false" <%= !listing.vaccinationStatus ? 'selected' : '' %>>
-                        No
-                    </option>
-                    <option value="true" <%= listing.vaccinationStatus ? 'selected' : '' %>>
-                        Yes
-                    </option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Description</label>
-                <textarea
-                    name="description"
-                    rows="5"
-                    required
-                ><%= listing.description %></textarea>
-            </div>
-
-            <button type="submit" class="btn-primary">
-                Save Changes
-            </button>
-
-            <a href="/listings/<%= listing._id %>" class="btn-secondary">
-                Cancel
-            </a>
-
+            <div class="form-footer"><a href="/listings/<%= listing._id %>" class="button button-outline">Cancel</a><button type="submit" class="button button-primary">Save changes <span>✓</span></button></div>
         </form>
-
     </div>
-
-</section>
+</div></section>
