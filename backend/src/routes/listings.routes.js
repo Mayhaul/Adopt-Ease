@@ -223,22 +223,42 @@ router.put(
 );
 
 // DELETE LISTING
+// Remove the pet and its applications in one transaction.
 
 router.delete(
     '/:id',
     isLoggedIn,
     isOwner,
     async (req, res, next) => {
-        try {
-            await AdoptionApplication.deleteMany({
-                pet: req.params.id
-            });
+        const session = await mongoose.startSession();
 
-            await Pet.findByIdAndDelete(req.params.id);
+        try {
+            await session.withTransaction(async () => {
+                const deletedPet = await Pet.findOneAndDelete(
+                    {
+                        _id: req.params.id,
+                        owner: req.user._id
+                    },
+                    { session }
+                );
+
+                if (!deletedPet) {
+                    throw Object.assign(new Error('Pet listing not found'), {
+                        status: 404
+                    });
+                }
+
+                await AdoptionApplication.deleteMany(
+                    { pet: req.params.id },
+                    { session }
+                );
+            });
 
             res.redirect('/listings/my-listings');
         } catch (error) {
             next(error);
+        } finally {
+            await session.endSession();
         }
     }
 );
