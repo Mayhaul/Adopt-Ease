@@ -8,11 +8,8 @@ import adoptionRoutes from './adoption.routes.js';
 const router = express.Router();
 
 router.use('/', homeRoutes);
-
-router.use('/', userRoutes);
-
+router.use('/user', userRoutes);
 router.use('/listings', listingRoutes);
-
 router.use('/adoptions', adoptionRoutes);
 
 export default router;
