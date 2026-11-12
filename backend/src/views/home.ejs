@@ -1,49 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adopt-Ease | Home</title>
-    <link rel="stylesheet" href="/style.css">
-</head>
+<%- layout('layouts/boilerplate', { title: 'AdoptEase | Find a forever friend' }) %>
 
-<body>
-
-    <!-- NAVBAR -->
-    <header class="navbar">
-        <div class="logo">
-            <span role="img" aria-label="paw icon">🐾</span>
-            Adopt-Ease
-        </div>
-
-        <nav aria-label="Main Navigation">
-            <a href="/">Home</a>
-            <a href="/listings">Animal Listings</a>
-            <a href="/listings/new">List Adoption</a>
-        </nav>
-    </header>
-
-    <main>
-        <!-- HERO / HOME -->
-        <section id="home" class="hero">
-            <div class="hero-content">
-                <p class="eyebrow">DOG LISTING MANAGEMENT</p>
-
-                <h1>
-                    Manage Animal Adoption
-                    <span>Simply.</span>
-                </h1>
-
-                <p>
-                    Add, view, edit, search and delete Animal listings.
-                </p>
-
-                <a href="#dogs" class="primary-btn">
-                    View Listings
-                </a>
+<section class="hero-section">
+    <div class="container hero-grid">
+        <div class="hero-copy">
+            <span class="eyebrow"><span class="eyebrow-dot"></span> A little love changes everything</span>
+            <h1>Find your <em>forever</em><br>kind of friend.</h1>
+            <p class="hero-lead">A new best friend might be closer than you think. Meet animals looking for a safe, happy place to call home.</p>
+            <div class="hero-actions">
+                <a href="/listings" class="button button-primary">Meet the animals <span aria-hidden="true">↗</span></a>
+                <% if (currentUser) { %>
+                    <a href="/listings/new" class="button button-outline">List an animal</a>
+                <% } else { %>
+                    <a href="/user/register" class="button button-outline">Join our community</a>
+                <% } %>
             </div>
-        </section>
-    </main>
-
-</body>
-</html>
+            <div class="hero-proof">
+                <div class="proof-avatars" aria-hidden="true"><span>🐶</span><span>🐱</span><span>🐰</span></div>
+                <p><strong>Small steps. Big second chances.</strong><br>Browse thoughtfully. Adopt responsibly.</p>
+            </div>
+        </div>
+        <div class="hero-art" aria-label="Illustration of a happy dog waiting for a home" role="img">
+            <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div><div class="hero-sun"></div>
+            <div class="hero-pet-card"><div class="hero-pet-emoji">🐕</div><div class="hero-pet-caption"><span class="mini-label">YOUR NEW CHAPTER</span><strong>Starts with a hello.</strong></div></div>
+            <div class="floating-note note-top"><span>♥</span> Love lives here</div><div class="floating-note note-bottom"><span>✦</span> Adopt, don't shop</div>
+        </div>
+    </div>
+</section>
+<section class="trust-strip"><div class="container trust-grid">
+    <div><span class="trust-icon">♡</span><span><strong>Compassion first</strong><small>Every animal matters</small></span></div>
+    <div><span class="trust-icon">⌂</span><span><strong>Better matches</strong><small>Thoughtful adoption</small></span></div>
+    <div><span class="trust-icon">✳</span><span><strong>Community powered</strong><small>People helping animals</small></span></div>
+</div></section>
+<section class="section section-soft"><div class="container split-section">
+    <div><span class="eyebrow">A good place to begin</span><h2 class="section-title">A home is more than four walls. <em>It's a feeling.</em></h2></div>
+    <div class="split-copy"><p class="muted-copy">Adoption is a commitment built on patience, care, and trust. Explore the animals listed by our community and take the time to find the right companion for your life.</p><a href="/listings" class="text-link">Explore available animals <span aria-hidden="true">→</span></a></div>
+</div></section>
+<section class="section how-section"><div class="container">
+    <div class="section-heading centered-heading"><span class="eyebrow">The journey</span><h2 class="section-title">Three steps to a <em>new beginning.</em></h2><p class="muted-copy">A simple starting point for a life-changing connection.</p></div>
+    <div class="steps-grid">
+        <article class="step-card"><span class="step-number">01</span><div class="step-icon">⌕</div><h3>Find your match</h3><p>Browse animal profiles and learn about their needs, personalities, and location.</p></article>
+        <article class="step-card"><span class="step-number">02</span><div class="step-icon">♡</div><h3>Send an application</h3><p>Tell the pet owner about your home, experience, and why you'd be a good fit.</p></article>
+        <article class="step-card"><span class="step-number">03</span><div class="step-icon">⌂</div><h3>Start your story</h3><p>Connect with the owner, discuss the next steps, and prepare for responsible adoption.</p></article>
+    </div>
+</div></section>
+<section class="closing-cta"><div class="container closing-cta-inner">
+    <div><span class="eyebrow eyebrow-light">Your next chapter could have paws</span><h2>Someone wonderful<br>is waiting to meet you.</h2></div>
+    <a href="/listings" class="button button-light">Find your friend <span aria-hidden="true">↗</span></a>
+</div></section>
