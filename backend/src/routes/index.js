@@ -1,14 +1,18 @@
 import express from 'express';
-const router = express.Router();
+
 import homeRoutes from './home.routes.js';
 import listingRoutes from './listings.routes.js';
 import userRoutes from './user.routes.js';
+import adoptionRoutes from './adoption.routes.js';
 
-
-
+const router = express.Router();
 
 router.use('/', homeRoutes);
+
+router.use('/', userRoutes);
+
 router.use('/listings', listingRoutes);
-router.use('/user', userRoutes);
+
+router.use('/adoptions', adoptionRoutes);
 
 export default router;

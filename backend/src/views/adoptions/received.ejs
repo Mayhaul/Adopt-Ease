@@ -1,0 +1,98 @@
+<%- layout('layouts/boilerplate') %>
+
+<section class="listings-section">
+    <div class="container">
+
+        <div class="section-heading">
+            <h1>Received Applications</h1>
+            <p>Review applications for your pets.</p>
+        </div>
+
+        <% if (applications.length === 0) { %>
+
+            <div class="empty-state">
+                <h2>No applications received</h2>
+                <p>Applications will appear here.</p>
+            </div>
+
+        <% } else { %>
+
+            <div class="listing-grid">
+
+                <% applications.forEach(application => { %>
+
+                    <div class="listing-card">
+                        <div class="listing-card-content">
+
+                            <h3>
+                                <%= application.pet?.name || 'Pet Unavailable' %>
+                            </h3>
+
+                            <p>
+                                <strong>Applicant:</strong>
+                                <%= application.applicant?.displayName || 'Unknown' %>
+                            </p>
+
+                            <p>
+                                <strong>Email:</strong>
+                                <%= application.applicant?.email || 'N/A' %>
+                            </p>
+
+                            <p>
+                                <strong>Phone:</strong>
+                                <%= application.applicant?.phone || 'N/A' %>
+                            </p>
+
+                            <p>
+                                <strong>Living Situation:</strong>
+                                <%= application.livingSituation %>
+                            </p>
+
+                            <p>
+                                <strong>Reason:</strong>
+                                <%= application.reason %>
+                            </p>
+
+                            <p>
+                                <strong>Experience:</strong>
+                                <%= application.experience %>
+                            </p>
+
+                            <p>
+                                <strong>Status:</strong>
+                                <%= application.status %>
+                            </p>
+
+                            <% if (application.status === 'Pending' && application.pet?.adoptionStatus === 'Available') { %>
+
+                                <form
+                                    action="/adoptions/<%= application._id %>/approve?_method=PUT"
+                                    method="POST"
+                                >
+                                    <button type="submit" class="btn-primary">
+                                        Approve
+                                    </button>
+                                </form>
+
+                                <form
+                                    action="/adoptions/<%= application._id %>/reject?_method=PUT"
+                                    method="POST"
+                                >
+                                    <button type="submit" class="btn-danger">
+                                        Reject
+                                    </button>
+                                </form>
+
+                            <% } %>
+
+                        </div>
+                    </div>
+
+                <% }) %>
+
+            </div>
+
+        <% } %>
+
+    </div>
+</section>

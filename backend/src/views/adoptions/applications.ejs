@@ -1,0 +1,66 @@
+<%- layout('layouts/boilerplate') %>
+
+<section class="listings-section">
+    <div class="container">
+
+        <div class="section-heading">
+            <h1>My Adoption Applications</h1>
+            <p>Track the status of your applications.</p>
+        </div>
+
+        <% if (applications.length === 0) { %>
+
+            <div class="empty-state">
+                <h2>No applications yet</h2>
+                <p>You haven't applied to adopt a pet.</p>
+
+                <a href="/listings" class="btn-primary">
+                    Browse Pets
+                </a>
+            </div>
+
+        <% } else { %>
+
+            <div class="listing-grid">
+
+                <% applications.forEach(application => { %>
+
+                    <div class="listing-card">
+                        <div class="listing-card-content">
+
+                            <h3>
+                                <%= application.pet?.name || 'Pet Unavailable' %>
+                            </h3>
+
+                            <p>
+                                Status:
+                                <strong><%= application.status %></strong>
+                            </p>
+
+                            <p>
+                                Applied:
+                                <%= application.createdAt.toLocaleDateString() %>
+                            </p>
+
+                            <p><%= application.reason %></p>
+
+                            <% if (application.pet) { %>
+                                <a
+                                    href="/listings/<%= application.pet._id %>"
+                                    class="btn-primary"
+                                >
+                                    View Pet
+                                </a>
+                            <% } %>
+
+                        </div>
+                    </div>
+
+                <% }) %>
+
+            </div>
+
+        <% } %>
+
+    </div>
+</section>

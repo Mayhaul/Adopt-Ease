@@ -1,186 +1,246 @@
 import express from 'express';
+import mongoose from 'mongoose';
+
 import Pet from '../models/pet.model.js';
-import { isLoggedIn } from '../middleware/auth.middleware.js';
+import AdoptionApplication from '../models/application.model.js';
+
+import {
+    isLoggedIn,
+    isOwner
+} from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
-// VIEW ALL LISTINGS
-router.get('/', async (req, res) => {
+// ALLOWED PET FIELDS
 
+const getPetData = (body) => {
+    const {
+        name,
+        species,
+        breed,
+        age,
+        gender,
+        description,
+        location,
+        healthStatus,
+        vaccinationStatus,
+        image
+    } = body;
+
+    return {
+        name,
+        species,
+        breed,
+        age,
+        gender,
+        description,
+        location,
+        healthStatus,
+        vaccinationStatus: vaccinationStatus === 'true',
+
+        images:
+            typeof image === 'string' && image.trim()
+                ? [image.trim()]
+                : []
+    };
+};
+
+// ESCAPE REGEX SPECIAL CHARACTERS
+
+const escapeRegex = (text) => {
+    return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+// ALL AVAILABLE LISTINGS
+
+router.get('/', async (req, res, next) => {
     try {
+        const search =
+            typeof req.query.search === 'string'
+                ? req.query.search.trim().slice(0, 100)
+                : '';
 
-        const { search, species } = req.query;
+        const species =
+            typeof req.query.species === 'string'
+                ? req.query.species
+                : '';
 
-        let filter = {};
+        const filter = {
+            adoptionStatus: 'Available'
+        };
 
-        filter.adoptionStatus = 'Available';
+        const validSpecies = [
+            'Dog',
+            'Cat',
+            'Bird',
+            'Rabbit',
+            'Other'
+        ];
 
-        if (species) {
+        if (species && validSpecies.includes(species)) {
             filter.species = species;
         }
 
         if (search) {
+            const safeSearch = escapeRegex(search);
 
             filter.$or = [
-                { name: { $regex: search, $options: 'i' } },
-                { breed: { $regex: search, $options: 'i' } },
-                { location: { $regex: search, $options: 'i' } }
+                {
+                    name: {
+                        $regex: safeSearch,
+                        $options: 'i'
+                    }
+                },
+                {
+                    breed: {
+                        $regex: safeSearch,
+                        $options: 'i'
+                    }
+                },
+                {
+                    location: {
+                        $regex: safeSearch,
+                        $options: 'i'
+                    }
+                }
             ];
-
         }
 
         const listings = await Pet.find(filter)
-            .populate('owner', 'username');
+            .sort({ createdAt: -1 });
 
         res.render('listings.ejs', {
             listings,
             search,
             species
         });
-
     } catch (error) {
-
-        console.error(error);
-        res.status(500).send('Something went wrong');
-
+        next(error);
     }
+});
 
+// MY LISTINGS
+
+router.get('/my-listings', isLoggedIn, async (req, res, next) => {
+    try {
+        const listings = await Pet.find({
+            owner: req.user._id
+        }).sort({ createdAt: -1 });
+
+        res.render('listings/my-listings.ejs', {
+            listings
+        });
+    } catch (error) {
+        next(error);
+    }
 });
 
 // NEW LISTING FORM
+
 router.get('/new', isLoggedIn, (req, res) => {
-
     res.render('listings/new.ejs');
-
 });
 
 // CREATE LISTING
-router.post('/', isLoggedIn, async (req, res) => {
 
+router.post('/', isLoggedIn, async (req, res, next) => {
     try {
+        const petData = getPetData(req.body);
 
-        const newPet = new Pet(req.body);
+        const pet = new Pet({
+            ...petData,
+            owner: req.user._id
+        });
 
-        newPet.owner = req.user._id;
+        await pet.save();
 
-        await newPet.save();
-
-        res.redirect('/listings');
-
+        res.redirect(`/listings/${pet._id}`);
     } catch (error) {
-
-        console.error(error);
-        res.status(500).send('Could not create listing');
-
+        next(error);
     }
-
 });
 
 // VIEW SINGLE LISTING
-router.get('/:id', async (req, res) => {
 
+router.get('/:id', async (req, res, next) => {
     try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            return res.status(400).send('Invalid listing ID');
+        }
 
         const listing = await Pet.findById(req.params.id)
-            .populate('owner', 'username email phone');
+            .populate('owner', 'displayName email phone');
 
         if (!listing) {
             return res.status(404).send('Listing not found');
         }
 
-        res.render('listings/show.ejs', { listing });
-
+        res.render('listings/show.ejs', {
+            listing
+        });
     } catch (error) {
-
-        console.error(error);
-        res.status(500).send('Something went wrong');
-
+        next(error);
     }
-
 });
 
-// EDIT LISTING FORM
-router.get('/:id/edit', isLoggedIn, async (req, res) => {
+// EDIT FORM
 
-    try {
-
-        const listing = await Pet.findById(req.params.id);
-
-        if (!listing) {
-            return res.status(404).send('Listing not found');
-        }
-
-        if (!listing.owner.equals(req.user._id)) {
-            return res.status(403).send('Unauthorized');
-        }
-
-        res.render('listings/edit.ejs', { listing });
-
-    } catch (error) {
-
-        console.error(error);
-        res.status(500).send('Something went wrong');
-
+router.get(
+    '/:id/edit',
+    isLoggedIn,
+    isOwner,
+    (req, res) => {
+        res.render('listings/edit.ejs', {
+            listing: res.locals.pet
+        });
     }
-
-});
+);
 
 // UPDATE LISTING
-router.put('/:id', isLoggedIn, async (req, res) => {
 
-    try {
+router.put(
+    '/:id',
+    isLoggedIn,
+    isOwner,
+    async (req, res, next) => {
+        try {
+            const petData = getPetData(req.body);
 
-        const listing = await Pet.findById(req.params.id);
+            await Pet.findByIdAndUpdate(
+                req.params.id,
+                { $set: petData },
+                {
+                    runValidators: true,
+                    new: true
+                }
+            );
 
-        if (!listing) {
-            return res.status(404).send('Listing not found');
+            res.redirect(`/listings/${req.params.id}`);
+        } catch (error) {
+            next(error);
         }
-
-        if (!listing.owner.equals(req.user._id)) {
-            return res.status(403).send('Unauthorized');
-        }
-
-        await Pet.findByIdAndUpdate(req.params.id, req.body, {
-            runValidators: true
-        });
-
-        res.redirect(`/listings/${req.params.id}`);
-
-    } catch (error) {
-
-        console.error(error);
-        res.status(500).send('Could not update listing');
-
     }
-
-});
+);
 
 // DELETE LISTING
-router.delete('/:id', isLoggedIn, async (req, res) => {
 
-    try {
+router.delete(
+    '/:id',
+    isLoggedIn,
+    isOwner,
+    async (req, res, next) => {
+        try {
+            await AdoptionApplication.deleteMany({
+                pet: req.params.id
+            });
 
-        const listing = await Pet.findById(req.params.id);
+            await Pet.findByIdAndDelete(req.params.id);
 
-        if (!listing) {
-            return res.status(404).send('Listing not found');
+            res.redirect('/listings/my-listings');
+        } catch (error) {
+            next(error);
         }
-
-        if (!listing.owner.equals(req.user._id)) {
-            return res.status(403).send('Unauthorized');
-        }
-
-        await Pet.findByIdAndDelete(req.params.id);
-
-        res.redirect('/listings');
-
-    } catch (error) {
-
-        console.error(error);
-        res.status(500).send('Could not delete listing');
-
     }
-
-});
+);
 
 export default router;

@@ -1,39 +1,38 @@
+import mongoose from 'mongoose';
 import Pet from '../models/pet.model.js';
 
-// Check if user is logged in
 export const isLoggedIn = (req, res, next) => {
-
     if (!req.isAuthenticated()) {
         req.session.returnTo = req.originalUrl;
+
         return res.redirect('/login');
     }
 
     next();
 };
 
-
-// Check if logged-in user owns the listing
 export const isOwner = async (req, res, next) => {
-
     try {
+        const { id } = req.params;
 
-        const pet = await Pet.findById(req.params.id);
+        if (!mongoose.isValidObjectId(id)) {
+            return res.status(400).send('Invalid listing ID');
+        }
+
+        const pet = await Pet.findById(id);
 
         if (!pet) {
-            return res.status(404).send('Pet listing not found');
+            return res.status(404).send('Pet not found');
         }
 
         if (!pet.owner.equals(req.user._id)) {
-            return res.status(403).send('You are not authorized to perform this action');
+            return res.status(403).send('Unauthorized');
         }
 
+        res.locals.pet = pet;
+
         next();
-
     } catch (error) {
-
-        console.error(error);
         next(error);
-
     }
-
 };

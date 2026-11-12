@@ -1,16 +1,21 @@
-import express from 'express';
+import 'dotenv/config';
+
 import { app } from './src/app.js';
 import connectDB from './src/config/db.js';
-import dotenv from 'dotenv';
 
-dotenv.config();
+const PORT = process.env.PORT || 8080;
 
-connectDB()
-.then(() => {
-app.listen(8080, () => {
-console.log(`App is listening at 8080`);
-});
-})
-.catch((error) => {
-console.error('Database connection failed:', error);
-});
+async function startServer() {
+    try {
+        await connectDB();
+
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error('Failed to start server:', error);
+        process.exit(1);
+    }
+}
+
+startServer();

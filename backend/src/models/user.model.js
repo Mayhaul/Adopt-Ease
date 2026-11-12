@@ -3,40 +3,52 @@ import passportLocalMongoose from 'passport-local-mongoose';
 
 const passportLocalMongoosePlugin =
     passportLocalMongoose.default || passportLocalMongoose;
-const userSchema = new mongoose.Schema({
 
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true
+const userSchema = new mongoose.Schema(
+    {
+        displayName: {
+            type: String,
+            required: true,
+            trim: true,
+            minlength: 3
+        },
+
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true,
+            trim: true
+        },
+
+        phone: {
+            type: String,
+            required: true,
+            trim: true
+        },
+
+        profileImage: {
+            type: String,
+            default: ''
+        },
+
+        address: {
+            type: String,
+            required: true,
+            trim: true
+        },
+
+        role: {
+            type: String,
+            enum: ['adopter', 'owner', 'admin'],
+            default: 'adopter'
+        }
     },
-
-    phone: {
-        type: String,
-        required: true
-    },
-
-    profileImage: {
-        type: String,
-        default: ''
-    },
-
-    address: {
-        type: String,
-        required: true
-    },
-
-    role: {
-        type: String,
-        enum: ['adopter', 'owner', 'admin'],
-        default: 'adopter'
+    {
+        timestamps: true
     }
+);
 
-}, { timestamps: true });
-
-// Passport Local Mongoose plugin
 userSchema.plugin(passportLocalMongoosePlugin, {
     usernameField: 'email'
 });

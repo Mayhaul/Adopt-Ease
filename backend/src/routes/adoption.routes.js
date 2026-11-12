@@ -1,189 +1,272 @@
-// import express from 'express';
+import express from 'express';
+import mongoose from 'mongoose';
 
-// import Pet from '../models/pet.model.js';
-// import AdoptionApplication from '../models/adoptionApplication.model.js';
+import Pet from '../models/pet.model.js';
+import AdoptionApplication from '../models/application.model.js';
 
-// import { isLoggedIn } from '../middleware/auth.middleware.js';
+import { isLoggedIn } from '../middleware/auth.middleware.js';
 
-// const router = express.Router();
+const router = express.Router();
 
-// // ADOPTION APPLICATION FORM
-// router.get('/new/:petId', isLoggedIn, async (req, res) => {
+// ADOPTION FORM
 
-//     const pet = await Pet.findById(req.params.petId);
+router.get('/new/:petId', isLoggedIn, async (req, res, next) => {
+    try {
+        if (!mongoose.isValidObjectId(req.params.petId)) {
+            return res.status(400).send('Invalid pet ID');
+        }
 
-//     if (!pet) {
-//         return res.status(404).send('Pet not found');
-//     }
+        const pet = await Pet.findById(req.params.petId);
 
-//     if (pet.owner.equals(req.user._id)) {
-//         return res.status(403).send('You cannot adopt your own listing');
-//     }
+        if (!pet) {
+            return res.status(404).send('Pet not found');
+        }
 
-//     if (pet.adoptionStatus !== 'Available') {
-//         return res.status(400).send('Pet is not available');
-//     }
+        if (pet.owner.equals(req.user._id)) {
+            return res.status(403).send(
+                'You cannot adopt your own pet'
+            );
+        }
 
-//     res.render('adoptions/new.ejs', { pet });
+        if (pet.adoptionStatus !== 'Available') {
+            return res.status(400).send(
+                'This pet is not available for adoption'
+            );
+        }
 
-// });
+        res.render('adoptions/new.ejs', { pet });
+    } catch (error) {
+        next(error);
+    }
+});
 
-// // SUBMIT APPLICATION
-// router.post('/:petId', isLoggedIn, async (req, res) => {
+// SUBMIT APPLICATION
 
-//     try {
+router.post('/:petId', isLoggedIn, async (req, res, next) => {
+    try {
+        if (!mongoose.isValidObjectId(req.params.petId)) {
+            return res.status(400).send('Invalid pet ID');
+        }
 
-//         const pet = await Pet.findById(req.params.petId);
+        const pet = await Pet.findById(req.params.petId);
 
-//         if (!pet) {
-//             return res.status(404).send('Pet not found');
-//         }
+        if (!pet) {
+            return res.status(404).send('Pet not found');
+        }
 
-//         if (pet.owner.equals(req.user._id)) {
-//             return res.status(403).send('You cannot adopt your own listing');
-//         }
+        if (pet.owner.equals(req.user._id)) {
+            return res.status(403).send(
+                'You cannot adopt your own pet'
+            );
+        }
 
-//         if (pet.adoptionStatus !== 'Available') {
-//             return res.status(400).send('Pet is not available');
-//         }
+        if (pet.adoptionStatus !== 'Available') {
+            return res.status(400).send(
+                'Pet is not available'
+            );
+        }
 
-//         const application = new AdoptionApplication({
-//             pet: pet._id,
-//             applicant: req.user._id,
-//             reason: req.body.reason,
-//             livingSituation: req.body.livingSituation,
-//             experience: req.body.experience
-//         });
+        const {
+            reason,
+            livingSituation,
+            experience
+        } = req.body;
 
-//         await application.save();
+        const application = new AdoptionApplication({
+            pet: pet._id,
+            applicant: req.user._id,
+            reason,
+            livingSituation,
+            experience
+        });
 
-//         res.redirect('/adoptions/my-applications');
+        await application.save();
 
-//     } catch (error) {
+        res.redirect('/adoptions/my-applications');
+    } catch (error) {
+        if (error.code === 11000) {
+            return res.status(409).send(
+                'You have already applied for this pet'
+            );
+        }
 
-//         if (error.code === 11000) {
-//             return res.status(400).send('You have already applied for this pet');
-//         }
+        next(error);
+    }
+});
 
-//         console.error(error);
-//         res.status(500).send('Application failed');
+// MY APPLICATIONS
 
-//     }
+router.get('/my-applications', isLoggedIn, async (req, res, next) => {
+    try {
+        const applications = await AdoptionApplication.find({
+            applicant: req.user._id
+        })
+            .populate('pet')
+            .sort({ createdAt: -1 });
 
-// });
+        res.render('adoptions/applications.ejs', {
+            applications
+        });
+    } catch (error) {
+        next(error);
+    }
+});
 
-// // MY APPLICATIONS
-// router.get('/my-applications', isLoggedIn, async (req, res) => {
+// RECEIVED APPLICATIONS
 
-//     const applications = await AdoptionApplication.find({
-//         applicant: req.user._id
-//     }).populate('pet');
+router.get('/received', isLoggedIn, async (req, res, next) => {
+    try {
+        const pets = await Pet.find({
+            owner: req.user._id
+        }).select('_id');
 
-//     res.render('adoptions/applications.ejs', { applications });
+        const petIds = pets.map((pet) => pet._id);
 
-// });
+        const applications = await AdoptionApplication.find({
+            pet: { $in: petIds }
+        })
+            .populate('pet')
+            .populate(
+                'applicant',
+                'displayName email phone'
+            )
+            .sort({ createdAt: -1 });
 
-// // APPLICATIONS RECEIVED BY PET OWNER
-// router.get('/received', isLoggedIn, async (req, res) => {
+        res.render('adoptions/received.ejs', {
+            applications
+        });
+    } catch (error) {
+        next(error);
+    }
+});
 
-//     const pets = await Pet.find({
-//         owner: req.user._id
-//     }).select('_id');
+// APPROVE APPLICATION
 
-//     const petIds = pets.map(pet => pet._id);
+router.put('/:id/approve', isLoggedIn, async (req, res, next) => {
+    try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            return res.status(400).send('Invalid application ID');
+        }
 
-//     const applications = await AdoptionApplication.find({
-//         pet: { $in: petIds }
-//     })
-//         .populate('pet')
-//         .populate('applicant', 'username email phone');
+        const application = await AdoptionApplication.findById(
+            req.params.id
+        ).populate('pet');
 
-//     res.render('adoptions/received.ejs', { applications });
+        if (!application || !application.pet) {
+            return res.status(404).send(
+                'Application or pet not found'
+            );
+        }
 
-// });
+        if (!application.pet.owner.equals(req.user._id)) {
+            return res.status(403).send('Unauthorized');
+        }
 
-// // APPROVE APPLICATION
-// router.put('/:id/approve', isLoggedIn, async (req, res) => {
+        if (application.status !== 'Pending') {
+            return res.status(400).send(
+                'Application has already been processed'
+            );
+        }
 
-//     try {
+        // Atomic status transition prevents competing approvals
+        // from both claiming the same available pet.
 
-//         const application = await AdoptionApplication.findById(req.params.id)
-//             .populate('pet');
+        const updatedPet = await Pet.findOneAndUpdate(
+            {
+                _id: application.pet._id,
+                adoptionStatus: 'Available'
+            },
+            {
+                $set: {
+                    adoptionStatus: 'Adopted'
+                }
+            },
+            {
+                new: true
+            }
+        );
 
-//         if (!application) {
-//             return res.status(404).send('Application not found');
-//         }
+        if (!updatedPet) {
+            return res.status(409).send(
+                'This pet is no longer available'
+            );
+        }
 
-//         if (!application.pet.owner.equals(req.user._id)) {
-//             return res.status(403).send('Unauthorized');
-//         }
+        await AdoptionApplication.updateOne(
+            {
+                _id: application._id,
+                status: 'Pending'
+            },
+            {
+                $set: {
+                    status: 'Approved'
+                }
+            }
+        );
 
-//         if (application.status !== 'Pending' ||
-//             application.pet.adoptionStatus !== 'Available') {
-//             return res.status(400).send('Application cannot be approved');
-//         }
+        await AdoptionApplication.updateMany(
+            {
+                pet: application.pet._id,
+                _id: { $ne: application._id },
+                status: 'Pending'
+            },
+            {
+                $set: {
+                    status: 'Rejected'
+                }
+            }
+        );
 
-//         application.status = 'Approved';
-//         application.pet.adoptionStatus = 'Adopted';
+        res.redirect('/adoptions/received');
+    } catch (error) {
+        next(error);
+    }
+});
 
-//         await application.save();
-//         await application.pet.save();
+// REJECT APPLICATION
 
-//         await AdoptionApplication.updateMany(
-//             {
-//                 pet: application.pet._id,
-//                 _id: { $ne: application._id },
-//                 status: 'Pending'
-//             },
-//             {
-//                 $set: { status: 'Rejected' }
-//             }
-//         );
+router.put('/:id/reject', isLoggedIn, async (req, res, next) => {
+    try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            return res.status(400).send('Invalid application ID');
+        }
 
-//         res.redirect('/adoptions/received');
+        const application = await AdoptionApplication.findById(
+            req.params.id
+        ).populate('pet');
 
-//     } catch (error) {
+        if (!application || !application.pet) {
+            return res.status(404).send(
+                'Application or pet not found'
+            );
+        }
 
-//         console.error(error);
-//         res.status(500).send('Could not approve application');
+        if (!application.pet.owner.equals(req.user._id)) {
+            return res.status(403).send('Unauthorized');
+        }
 
-//     }
+        if (application.status !== 'Pending') {
+            return res.status(400).send(
+                'Application has already been processed'
+            );
+        }
 
-// });
+        await AdoptionApplication.updateOne(
+            {
+                _id: application._id,
+                status: 'Pending'
+            },
+            {
+                $set: {
+                    status: 'Rejected'
+                }
+            }
+        );
 
-// // REJECT APPLICATION
-// router.put('/:id/reject', isLoggedIn, async (req, res) => {
+        res.redirect('/adoptions/received');
+    } catch (error) {
+        next(error);
+    }
+});
 
-//     try {
-
-//         const application = await AdoptionApplication.findById(req.params.id)
-//             .populate('pet');
-
-//         if (!application) {
-//             return res.status(404).send('Application not found');
-//         }
-
-//         if (!application.pet.owner.equals(req.user._id)) {
-//             return res.status(403).send('Unauthorized');
-//         }
-
-//         if (application.status !== 'Pending') {
-//             return res.status(400).send('Application is already processed');
-//         }
-
-//         application.status = 'Rejected';
-
-//         await application.save();
-
-//         res.redirect('/adoptions/received');
-
-//     } catch (error) {
-
-//         console.error(error);
-//         res.status(500).send('Could not reject application');
-
-//     }
-
-// });
-
-// export default router;
+export default router;

@@ -1,0 +1,57 @@
+<%- layout('layouts/boilerplate') %>
+
+<section class="form-section">
+    <div class="form-container">
+
+        <h1>Apply to Adopt <%= pet.name %></h1>
+
+        <p>
+            Tell the owner why you would be a good
+            match for <%= pet.name %>.
+        </p>
+
+        <form action="/adoptions/<%= pet._id %>" method="POST">
+
+            <div class="form-group">
+                <label>Why do you want to adopt this pet?</label>
+
+                <textarea
+                    name="reason"
+                    rows="5"
+                    maxlength="1000"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Living Situation</label>
+
+                <select name="livingSituation" required>
+                    <option value="">Select</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="Independent House">
+                        Independent House
+                    </option>
+                    <option value="Farmhouse">Farmhouse</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Previous Pet Experience</label>
+
+                <textarea
+                    name="experience"
+                    rows="4"
+                    required
+                ></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary">
+                Submit Application
+            </button>
+
+        </form>
+
+    </div>
+</section>

@@ -1,135 +1,67 @@
-```ejs
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<%- layout('layouts/boilerplate') %>
 
-    <title>Adopt-Ease | My Profile</title>
-    <link rel="stylesheet" href="/style.css">
-</head>
+<section class="listings-section">
+    <div class="container">
 
-<body>
+        <div class="section-heading">
+            <h1>
+                Welcome, <%= user.displayName || user.email %>!
+            </h1>
 
-    <header class="navbar">
-        <a href="/" class="logo">🐾 Adopt-Ease</a>
+            <p>Manage your account and adoption activities.</p>
+        </div>
 
-        <nav>
-            <a href="/">Home</a>
-            <a href="/listings">Listings</a>
-            <a href="/wishlist">Wishlist</a>
+        <div class="profile-card">
 
-            <form action="/logout" method="POST">
-                <button type="submit" class="secondary-btn">
-                    Logout
-                </button>
-            </form>
-        </nav>
-    </header>
-
-    <main>
-
-        <section class="section">
-
-            <div class="section-heading">
-                <p class="eyebrow">YOUR ACCOUNT</p>
-
-                <h1>Welcome, <%= user.username %>!</h1>
-
-                <p>
-                    Manage your account and adoption activities.
-                </p>
+            <div class="profile-avatar">
+                🐾
             </div>
 
-            <!-- PROFILE INFORMATION -->
+            <div class="profile-details">
 
-            <div class="profile-card">
+                <h2><%= user.displayName || 'Adopt-Ease Member' %></h2>
 
-                <div class="profile-avatar">
-                    🐾
-                </div>
+                <p><%= user.email %></p>
 
-                <div class="profile-details">
+                <p><%= user.phone %></p>
 
-                    <h2><%= user.username %></h2>
+                <p><%= user.address %></p>
 
-                    <p><%= user.email %></p>
-
-                    <p><%= user.phone %></p>
-
-                    <p><%= user.address %></p>
-
-                    <span class="role-badge">
-                        <%= user.role %>
-                    </span>
-
-                </div>
+                <span class="role-badge">
+                    <%= user.role %>
+                </span>
 
             </div>
 
-            <!-- DASHBOARD LINKS -->
+        </div>
 
-            <div class="dashboard-grid">
+        <div class="dashboard-grid">
 
-                <a href="/listings/my-listings" class="dashboard-card">
+            <a href="/listings/my-listings" class="dashboard-card">
+                <span>🏠</span>
+                <h3>My Listings</h3>
+                <p>Manage your pet listings.</p>
+            </a>
 
-                    <span>🏠</span>
+            <a href="/adoptions/my-applications" class="dashboard-card">
+                <span>📋</span>
+                <h3>My Applications</h3>
+                <p>Track your adoption applications.</p>
+            </a>
 
-                    <h3>My Listings</h3>
+            <a href="/adoptions/received" class="dashboard-card">
+                <span>🐾</span>
+                <h3>Received Applications</h3>
+                <p>Review applications for your pets.</p>
+            </a>
 
-                    <p>Manage animals you have listed for adoption.</p>
+            <a href="/listings/new" class="dashboard-card">
+                <span>➕</span>
+                <h3>Create Listing</h3>
+                <p>List a new pet for adoption.</p>
+            </a>
 
-                </a>
+        </div>
 
-                <a href="/adoptions/my-applications" class="dashboard-card">
-
-                    <span>📋</span>
-
-                    <h3>My Applications</h3>
-
-                    <p>Track the status of your adoption applications.</p>
-
-                </a>
-
-                <a href="/adoptions/received" class="dashboard-card">
-
-                    <span>🐾</span>
-
-                    <h3>Received Applications</h3>
-
-                    <p>Review adoption requests for your animals.</p>
-
-                </a>
-
-                <a href="/wishlist" class="dashboard-card">
-
-                    <span>❤️</span>
-
-                    <h3>My Wishlist</h3>
-
-                    <p>View animals you have saved.</p>
-
-                </a>
-
-            </div>
-
-            <div class="profile-actions">
-
-                <a href="/listings/new" class="primary-btn">
-                    + Create New Listing
-                </a>
-
-            </div>
-
-        </section>
-
-    </main>
-
-    <footer>
-        <strong>🐾 Adopt-Ease</strong>
-        <p>Helping animals find loving homes.</p>
-    </footer>
-
-</body>
-</html>
-```
+    </div>
+</section>
