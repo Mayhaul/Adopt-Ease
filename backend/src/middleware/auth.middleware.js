@@ -4,8 +4,7 @@ import Pet from '../models/pet.model.js';
 export const isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
         req.session.returnTo = req.originalUrl;
-
-        return res.redirect('/login');
+        return res.redirect('/user/login');
     }
 
     next();
@@ -30,7 +29,6 @@ export const isOwner = async (req, res, next) => {
         }
 
         res.locals.pet = pet;
-
         next();
     } catch (error) {
         next(error);

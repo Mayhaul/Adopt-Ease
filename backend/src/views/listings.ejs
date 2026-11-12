@@ -1,93 +1,35 @@
-<%- layout('layouts/boilerplate') %>
+<%- layout('layouts/boilerplate', { title: 'Find a pet | AdoptEase' }) %>
 
-<section class="listings-section">
-    <div class="container">
-
-        <div class="section-heading">
-            <h1>Find Your New Best Friend</h1>
-            <p>Every pet deserves a loving home. Find yours today.</p>
-        </div>
-
-        <!-- Search and Filters -->
-        <form action="/listings" method="GET" class="search-form">
-
-            <input
-                type="text"
-                name="search"
-                placeholder="Search by name, breed or location..."
-                value="<%= search %>"
-            >
-
-            <select name="species">
-                <option value="">All Animals</option>
-                <option value="Dog" <%= species === 'Dog' ? 'selected' : '' %>>Dogs</option>
-                <option value="Cat" <%= species === 'Cat' ? 'selected' : '' %>>Cats</option>
-                <option value="Bird" <%= species === 'Bird' ? 'selected' : '' %>>Birds</option>
-                <option value="Rabbit" <%= species === 'Rabbit' ? 'selected' : '' %>>Rabbits</option>
-                <option value="Other" <%= species === 'Other' ? 'selected' : '' %>>Others</option>
-            </select>
-
-            <button type="submit" class="btn-primary">Search</button>
-
-        </form>
-
-        <!-- Add Listing -->
-        <% if (currentUser) { %>
-            <div class="add-listing">
-                <a href="/listings/new" class="btn-primary">
-                    + List a Pet
-                </a>
-            </div>
-        <% } %>
-
-        <!-- Pet Cards -->
-        <% if (listings.length === 0) { %>
-
-            <div class="empty-state">
-                <h2>No pets found</h2>
-                <p>Try changing your search or filters.</p>
-            </div>
-
-        <% } else { %>
-
-            <div class="listing-grid">
-
-                <% listings.forEach(pet => { %>
-
-                    <div class="listing-card">
-
-                        <img
-                            src="<%= pet.images?.[0] || 'https://placehold.co/400x300?text=Pet+Image' %>"
-                            alt="<%= pet.name %>"
-                        >
-
-                        <div class="listing-card-content">
-
-                            <h3><%= pet.name %></h3>
-
-                            <p>
-                                <%= pet.breed %> · <%= pet.age %> years
-                            </p>
-
-                            <p><%= pet.location %></p>
-
-                            <span class="pet-species">
-                                <%= pet.species %>
-                            </span>
-
-                            <a href="/listings/<%= pet._id %>" class="btn-primary">
-                                View Details
-                            </a>
-
-                        </div>
-
-                    </div>
-
-                <% }) %>
-
-            </div>
-
-        <% } %>
-
+<section class="page-hero page-hero-compact"><div class="container page-hero-content">
+    <span class="eyebrow eyebrow-light">A friend is out there</span><h1>Meet your <em>new best friend.</em></h1><p>Explore animals looking for a loving, responsible home.</p>
+</div></section>
+<section class="section listings-page-section"><div class="container">
+    <div class="listing-toolbar-heading">
+        <div><span class="eyebrow">The adoption board</span><h2 class="section-title section-title-small">Find your kind of <em>company.</em></h2></div>
+        <% if (currentUser) { %><a href="/listings/new" class="button button-primary">＋ List a pet</a><% } %>
     </div>
-</section>
+    <form action="/listings" method="GET" class="filter-panel">
+        <div class="field filter-search-field"><label for="search">Search animals</label><input type="search" id="search" name="search" placeholder="Name, breed or location" value="<%= search || '' %>"></div>
+        <div class="field filter-species-field"><label for="species">Animal type</label><select id="species" name="species"><option value="">All animals</option><option value="Dog" <%= species === 'Dog' ? 'selected' : '' %>>Dogs</option><option value="Cat" <%= species === 'Cat' ? 'selected' : '' %>>Cats</option><option value="Bird" <%= species === 'Bird' ? 'selected' : '' %>>Birds</option><option value="Rabbit" <%= species === 'Rabbit' ? 'selected' : '' %>>Rabbits</option><option value="Other" <%= species === 'Other' ? 'selected' : '' %>>Other</option></select></div>
+        <button type="submit" class="button button-primary filter-button">Search <span aria-hidden="true">⌕</span></button>
+        <% if (search || species) { %><a href="/listings" class="clear-filter">Clear filters</a><% } %>
+    </form>
+    <div class="results-line"><span><strong><%= listings.length %></strong> <%= listings.length === 1 ? 'animal' : 'animals' %> to meet</span><span>Showing available pets</span></div>
+    <% if (!listings.length) { %>
+        <div class="empty-state empty-state-large"><div class="empty-illustration">🐾</div><span class="eyebrow">No matches just yet</span><h2>We couldn't find that friend.</h2><p>Try a different name, breed, location, or animal type.</p><a href="/listings" class="button button-outline">View all animals</a></div>
+    <% } else { %>
+        <div class="pet-grid">
+            <% listings.forEach((pet) => { %>
+                <article class="pet-card">
+                    <a href="/listings/<%= pet._id %>" class="pet-card-image-link" aria-label="View <%= pet.name %>"><img class="pet-card-image" src="<%= pet.images?.[0] || 'https://placehold.co/800x600/e9eee7/315b45?text=Pet+photo' %>" alt="<%= pet.name %>" loading="lazy"><span class="image-badge"><%= pet.species %></span></a>
+                    <div class="pet-card-body">
+                        <div class="pet-card-topline"><span class="pet-location">⌖ <%= pet.location %></span><span class="availability-dot">Available</span></div>
+                        <h3><a href="/listings/<%= pet._id %>"><%= pet.name %></a></h3><p class="pet-card-subtitle"><%= pet.breed %></p>
+                        <div class="pet-card-meta"><span>◷ <%= pet.age %> <%= Number(pet.age) === 1 ? 'year' : 'years' %></span><span>◉ <%= pet.gender %></span></div>
+                        <a href="/listings/<%= pet._id %>" class="card-link">Meet <%= pet.name %> <span aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+            <% }) %>
+        </div>
+    <% } %>
+</div></section>
