@@ -1,113 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title><%= title || 'Adopt-Ease' %></title>
-
     <link rel="stylesheet" href="/style.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-
 <body>
-
     <nav class="navbar">
-
         <div class="container navbar-container">
-
-            <a href="/" class="logo">
-                Adopt<span>Ease</span>
-            </a>
-
+            <a href="/" class="logo">Adopt<span>Ease</span></a>
             <div class="nav-links">
-
                 <a href="/">Home</a>
-
                 <a href="/listings">Find a Pet</a>
-
                 <% if (currentUser) { %>
-
                     <a href="/listings/new">List a Pet</a>
-
-                    <a href="/profile">Profile</a>
-
-                    <form
-                        action="/logout"
-                        method="POST"
-                        class="nav-logout"
-                    >
-                        <button type="submit" class="btn-secondary">
-                            Logout
-                        </button>
+                    <a href="/user/profile">Profile</a>
+                    <form action="/user/logout" method="POST" class="nav-logout">
+                        <button type="submit" class="btn-secondary">Logout</button>
                     </form>
-
                 <% } else { %>
-
-                    <a href="/login">Login</a>
-
-                    <a href="/register" class="btn-primary">
-                        Sign Up
-                    </a>
-
+                    <a href="/user/login">Login</a>
+                    <a href="/user/register" class="btn-primary">Sign Up</a>
                 <% } %>
-
             </div>
-
         </div>
-
     </nav>
 
-    <main>
-        <%- body %>
-    </main>
+    <main><%- body %></main>
 
     <footer class="footer">
-
         <div class="container">
-
             <div class="footer-content">
-
                 <div>
                     <h3>AdoptEase</h3>
                     <p>Every pet deserves a loving forever home.</p>
                 </div>
-
                 <div>
                     <h4>Explore</h4>
                     <a href="/">Home</a>
                     <a href="/listings">Find a Pet</a>
                 </div>
-
                 <div>
                     <h4>Account</h4>
-
                     <% if (currentUser) { %>
-                        <a href="/profile">Profile</a>
+                        <a href="/user/profile">Profile</a>
                     <% } else { %>
-                        <a href="/login">Login</a>
-                        <a href="/register">Register</a>
+                        <a href="/user/login">Login</a>
+                        <a href="/user/register">Register</a>
                     <% } %>
                 </div>
-
             </div>
-
-            <p class="copyright">
-                © <%= new Date().getFullYear() %>
-                AdoptEase. All rights reserved.
-            </p>
-
+            <p class="copyright">© <%= new Date().getFullYear() %> AdoptEase. All rights reserved.</p>
         </div>
-
     </footer>
-
 </body>
 </html>
