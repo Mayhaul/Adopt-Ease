@@ -1,0 +1,78 @@
+<%- layout('layouts/boilerplate') %>
+
+<section class="listings-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+            <h1>My Pet Listings</h1>
+            <p>Manage the pets you've listed for adoption.</p>
+        </div>
+
+        <div class="add-listing">
+            <a href="/listings/new" class="btn-primary">
+                + Add New Listing
+            </a>
+        </div>
+
+        <% if (listings.length === 0) { %>
+
+            <div class="empty-state">
+                <h2>You haven't listed any pets yet.</h2>
+                <p>Give a pet the opportunity to find its forever home.</p>
+
+                <a href="/listings/new" class="btn-primary">
+                    Create Your First Listing
+                </a>
+            </div>
+
+        <% } else { %>
+
+            <div class="listing-grid">
+
+                <% listings.forEach(pet => { %>
+
+                    <div class="listing-card">
+
+                        <img
+                            src="<%= pet.images?.[0] || 'https://placehold.co/400x300?text=Pet+Image' %>"
+                            alt="<%= pet.name %>"
+                        >
+
+                        <div class="listing-card-content">
+
+                            <h3><%= pet.name %></h3>
+
+                            <p><%= pet.species %> · <%= pet.breed %></p>
+
+                            <p><%= pet.location %></p>
+
+                            <span class="pet-species">
+                                <%= pet.adoptionStatus %>
+                            </span>
+
+                            <div class="card-actions">
+
+                                <a href="/listings/<%= pet._id %>" class="btn-primary">
+                                    View
+                                </a>
+
+                                <a href="/listings/<%= pet._id %>/edit" class="btn-secondary">
+                                    Edit
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                <% }) %>
+
+            </div>
+
+        <% } %>
+
+    </div>
+
+</section>

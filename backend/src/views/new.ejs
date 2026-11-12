@@ -1,0 +1,201 @@
+```ejs
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Adopt-Ease | Create Listing</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <a href="/" class="logo">
+            <span role="img" aria-label="paw icon">🐾</span>
+            Adopt-Ease
+        </a>
+
+        <nav aria-label="Main Navigation">
+            <a href="/">Home</a>
+            <a href="/listings">Animal Listings</a>
+            <a href="/listings/new">List an Animal</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="section form-section">
+
+            <!-- PAGE HEADING -->
+            <div class="section-heading">
+                <p class="eyebrow">GIVE AN ANIMAL A HOME</p>
+
+                <h1>Create an Adoption Listing</h1>
+
+                <p>
+                    Share an animal's details to help them find
+                    a caring and responsible home.
+                </p>
+            </div>
+
+            <!-- LISTING FORM -->
+            <form
+                action="/listings"
+                method="POST"
+                class="dog-form"
+            >
+
+                <div class="form-grid">
+
+                    <!-- ANIMAL NAME -->
+                    <div class="field">
+                        <label for="name">Animal Name</label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="e.g. Max"
+                            required
+                        >
+                    </div>
+
+                    <!-- SPECIES -->
+                    <div class="field">
+                        <label for="species">Species</label>
+
+                        <select id="species" name="species" required>
+                            <option value="" disabled selected>
+                                Select species
+                            </option>
+
+                            <option value="Dog">Dog</option>
+                            <option value="Cat">Cat</option>
+                            <option value="Rabbit">Rabbit</option>
+                            <option value="Bird">Bird</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- BREED -->
+                    <div class="field">
+                        <label for="breed">Breed</label>
+
+                        <input
+                            type="text"
+                            id="breed"
+                            name="breed"
+                            placeholder="e.g. Labrador or Mixed Breed"
+                            required
+                        >
+                    </div>
+
+                    <!-- AGE -->
+                    <div class="field">
+                        <label for="age">Age (in years)</label>
+
+                        <input
+                            type="number"
+                            id="age"
+                            name="age"
+                            min="0"
+                            max="100"
+                            step="1"
+                            placeholder="Enter age"
+                            required
+                        >
+                    </div>
+
+                    <!-- GENDER -->
+                    <div class="field">
+                        <label for="gender">Gender</label>
+
+                        <select id="gender" name="gender" required>
+                            <option value="" disabled selected>
+                                Select gender
+                            </option>
+
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                    </div>
+
+                    <!-- LOCATION -->
+                    <div class="field">
+                        <label for="location">Location</label>
+
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            placeholder="City, State"
+                            required
+                        >
+                    </div>
+
+                    <!-- IMAGE URL -->
+                    <div class="field full-width">
+                        <label for="image">Animal Image URL</label>
+
+                        <input
+                            type="url"
+                            id="image"
+                            name="image"
+                            placeholder="https://example.com/animal.jpg"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="field full-width">
+                    <label for="description">About the Animal</label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="5"
+                        placeholder="Describe the animal's personality, health, habits, and ideal home..."
+                        minlength="10"
+                        maxlength="2000"
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="form-actions">
+
+                    <button type="submit" class="primary-btn">
+                        Publish Listing
+                    </button>
+
+                    <a href="/listings" class="secondary-btn">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <strong>🐾 Adopt-Ease</strong>
+
+        <p>
+            Helping animals find loving homes, one adoption at a time.
+        </p>
+    </footer>
+
+</body>
+</html>
+```

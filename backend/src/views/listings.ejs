@@ -1,0 +1,93 @@
+<%- layout('layouts/boilerplate') %>
+
+<section class="listings-section">
+    <div class="container">
+
+        <div class="section-heading">
+            <h1>Find Your New Best Friend</h1>
+            <p>Every pet deserves a loving home. Find yours today.</p>
+        </div>
+
+        <!-- Search and Filters -->
+        <form action="/listings" method="GET" class="search-form">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search by name, breed or location..."
+                value="<%= search %>"
+            >
+
+            <select name="species">
+                <option value="">All Animals</option>
+                <option value="Dog" <%= species === 'Dog' ? 'selected' : '' %>>Dogs</option>
+                <option value="Cat" <%= species === 'Cat' ? 'selected' : '' %>>Cats</option>
+                <option value="Bird" <%= species === 'Bird' ? 'selected' : '' %>>Birds</option>
+                <option value="Rabbit" <%= species === 'Rabbit' ? 'selected' : '' %>>Rabbits</option>
+                <option value="Other" <%= species === 'Other' ? 'selected' : '' %>>Others</option>
+            </select>
+
+            <button type="submit" class="btn-primary">Search</button>
+
+        </form>
+
+        <!-- Add Listing -->
+        <% if (currentUser) { %>
+            <div class="add-listing">
+                <a href="/listings/new" class="btn-primary">
+                    + List a Pet
+                </a>
+            </div>
+        <% } %>
+
+        <!-- Pet Cards -->
+        <% if (listings.length === 0) { %>
+
+            <div class="empty-state">
+                <h2>No pets found</h2>
+                <p>Try changing your search or filters.</p>
+            </div>
+
+        <% } else { %>
+
+            <div class="listing-grid">
+
+                <% listings.forEach(pet => { %>
+
+                    <div class="listing-card">
+
+                        <img
+                            src="<%= pet.images?.[0] || 'https://placehold.co/400x300?text=Pet+Image' %>"
+                            alt="<%= pet.name %>"
+                        >
+
+                        <div class="listing-card-content">
+
+                            <h3><%= pet.name %></h3>
+
+                            <p>
+                                <%= pet.breed %> · <%= pet.age %> years
+                            </p>
+
+                            <p><%= pet.location %></p>
+
+                            <span class="pet-species">
+                                <%= pet.species %>
+                            </span>
+
+                            <a href="/listings/<%= pet._id %>" class="btn-primary">
+                                View Details
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                <% }) %>
+
+            </div>
+
+        <% } %>
+
+    </div>
+</section>

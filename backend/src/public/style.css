@@ -1,0 +1,532 @@
+```css
+/* ==============================
+   GLOBAL STYLES
+================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #315c45;
+    --primary-dark: #234633;
+    --primary-light: #e4eee5;
+    --background: #faf9f5;
+    --surface: #ffffff;
+    --text: #202a23;
+    --text-muted: #68736a;
+    --border: #e5e8e2;
+    --accent: #e9b779;
+    --shadow: 0 12px 35px rgba(35, 70, 51, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ==============================
+   NAVBAR
+================================= */
+
+.navbar {
+    width: 100%;
+    min-height: 82px;
+    padding: 0 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background-color: rgba(250, 249, 245, 0.95);
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    color: var(--primary-dark);
+    white-space: nowrap;
+}
+
+.logo span {
+    font-size: 1.7rem;
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 34px;
+}
+
+.navbar nav a {
+    font-size: 0.94rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+}
+
+.navbar nav a:hover {
+    color: var(--primary);
+}
+
+/* ==============================
+   HERO SECTION
+================================= */
+
+.hero {
+    min-height: 590px;
+    padding: 100px 8%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 85% 30%,
+            rgba(233, 183, 121, 0.18),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 75% 85%,
+            rgba(49, 92, 69, 0.10),
+            transparent 35%
+        ),
+        var(--background);
+}
+
+.hero::after {
+    content: '🐾';
+    position: absolute;
+    right: 10%;
+    bottom: 8%;
+    font-size: 11rem;
+    opacity: 0.07;
+    transform: rotate(-18deg);
+    pointer-events: none;
+}
+
+.hero-content {
+    max-width: 760px;
+    position: relative;
+    z-index: 1;
+}
+
+.eyebrow {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: var(--primary);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+}
+
+.hero h1 {
+    max-width: 700px;
+    margin-bottom: 24px;
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(2.8rem, 5.5vw, 5rem);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -3px;
+    color: var(--text);
+}
+
+.hero h1 span {
+    display: block;
+    color: var(--primary);
+}
+
+.hero-content > p:not(.eyebrow) {
+    max-width: 540px;
+    margin-bottom: 34px;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+/* ==============================
+   BUTTONS
+================================= */
+
+.primary-btn,
+.secondary-btn {
+    min-height: 50px;
+    padding: 13px 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 700;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.primary-btn {
+    color: #ffffff;
+    background-color: var(--primary);
+    box-shadow: 0 5px 14px rgba(49, 92, 69, 0.15);
+}
+
+.primary-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(49, 92, 69, 0.2);
+}
+
+.secondary-btn {
+    background-color: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+.secondary-btn:hover {
+    background-color: var(--primary-light);
+    border-color: var(--primary);
+}
+
+/* ==============================
+   GENERAL SECTION STYLES
+   Useful when adding listings/forms
+================================= */
+
+.section {
+    padding: 85px 8%;
+}
+
+.section-heading {
+    margin-bottom: 35px;
+}
+
+.section-heading h2 {
+    margin-bottom: 12px;
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.2;
+    letter-spacing: -1.5px;
+}
+
+.section-heading > p:not(.eyebrow) {
+    color: var(--text-muted);
+}
+
+/* ==============================
+   SEARCH TOOLBAR
+================================= */
+
+.toolbar {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.toolbar input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px 18px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+}
+
+.toolbar input:focus,
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(49, 92, 69, 0.1);
+}
+
+/* ==============================
+   DOG LISTING GRID
+================================= */
+
+.dog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 25px;
+}
+
+.dog-card {
+    overflow: hidden;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s ease;
+}
+
+.dog-card:hover {
+    transform: translateY(-5px);
+}
+
+.dog-card img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    display: block;
+}
+
+.dog-card-content {
+    padding: 22px;
+}
+
+.dog-card h3 {
+    margin-bottom: 8px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.3rem;
+}
+
+.dog-card p {
+    margin-bottom: 10px;
+    color: var(--text-muted);
+}
+
+.dog-card .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* ==============================
+   FORM SECTION
+================================= */
+
+.form-section {
+    background-color: #f0f3ed;
+}
+
+.dog-form {
+    max-width: 900px;
+    padding: 35px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.field label {
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    padding: 13px 15px;
+    background-color: #fdfdfb;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    color: var(--text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field textarea {
+    resize: vertical;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+/* ==============================
+   FOOTER
+================================= */
+
+footer {
+    padding: 30px 8%;
+    text-align: center;
+    background-color: var(--primary-dark);
+    color: #ffffff;
+}
+
+footer strong {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.15rem;
+}
+
+footer p {
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.9rem;
+}
+
+/* ==============================
+   RESPONSIVE DESIGN
+================================= */
+
+@media (max-width: 900px) {
+    .navbar {
+        padding: 20px 5%;
+    }
+
+    .navbar nav {
+        gap: 18px;
+    }
+
+    .hero,
+    .section {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .hero {
+        min-height: 520px;
+    }
+
+    .dog-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .navbar nav {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 12px 20px;
+    }
+
+    .navbar nav a {
+        font-size: 0.86rem;
+    }
+
+    .hero {
+        min-height: 470px;
+        padding-top: 75px;
+        padding-bottom: 75px;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.5rem, 11vw, 3.6rem);
+        letter-spacing: -1.8px;
+    }
+
+    .hero-content > p:not(.eyebrow) {
+        font-size: 1rem;
+    }
+
+    .hero::after {
+        right: 4%;
+        bottom: 3%;
+        font-size: 7rem;
+    }
+
+    .section {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
+    .toolbar {
+        flex-direction: column;
+    }
+
+    .dog-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .dog-form {
+        padding: 22px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}
+
+/* ==============================
+   ACCESSIBILITY
+================================= */
+
+:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
+```

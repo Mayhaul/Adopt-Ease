@@ -1,0 +1,77 @@
+<%- layout('layouts/boilerplate') %>
+
+<section class="pet-details-section">
+
+    <div class="pet-details-container">
+
+        <div class="pet-image">
+            <img
+                src="<%= listing.images?.[0] || 'https://placehold.co/600x450?text=Pet+Image' %>"
+                alt="<%= listing.name %>"
+            >
+        </div>
+
+        <div class="pet-information">
+
+            <span class="pet-species">
+                <%= listing.species %>
+            </span>
+
+            <h1><%= listing.name %></h1>
+
+            <p class="pet-breed"><%= listing.breed %></p>
+
+            <div class="pet-meta">
+                <p><strong>Age:</strong> <%= listing.age %> years</p>
+                <p><strong>Gender:</strong> <%= listing.gender %></p>
+                <p><strong>Location:</strong> <%= listing.location %></p>
+                <p><strong>Health:</strong> <%= listing.healthStatus %></p>
+                <p>
+                    <strong>Vaccinated:</strong>
+                    <%= listing.vaccinationStatus ? 'Yes' : 'No' %>
+                </p>
+                <p><strong>Status:</strong> <%= listing.adoptionStatus %></p>
+            </div>
+
+            <h3>About <%= listing.name %></h3>
+
+            <p><%= listing.description %></p>
+
+            <div class="owner-information">
+                <h3>Listed By</h3>
+                <p><%= listing.owner?.username || listing.owner?.email || 'Pet Owner' %></p>
+            </div>
+
+            <div class="pet-actions">
+
+                <% if (currentUser && listing.owner && String(listing.owner._id) === String(currentUser._id)) { %>
+
+                    <a href="/listings/<%= listing._id %>/edit" class="btn-primary">
+                        Edit Listing
+                    </a>
+
+                    <form
+                        action="/listings/<%= listing._id %>?_method=DELETE"
+                        method="POST"
+                        onsubmit="return confirm('Are you sure you want to delete this listing?')"
+                    >
+                        <button type="submit" class="btn-danger">
+                            Delete Listing
+                        </button>
+                    </form>
+
+                <% } else if (listing.adoptionStatus === 'Available') { %>
+
+                    <a href="/adoptions/new/<%= listing._id %>" class="btn-primary">
+                        Apply for Adoption
+                    </a>
+
+                <% } %>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
